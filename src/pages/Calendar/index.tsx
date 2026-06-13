@@ -114,7 +114,7 @@ export default function Calendar() {
       </div>
 
       {/* Heatmap */}
-      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in overflow-x-auto">
+      <div id="driver-calendar-grid" className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in overflow-x-auto">
         <div className="relative min-w-[600px]">
           {/* Month labels */}
           <div className="flex mb-1" style={{ paddingLeft: '28px' }}>

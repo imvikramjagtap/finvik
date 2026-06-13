@@ -154,7 +154,7 @@ export default function Settings() {
       </div>
 
       {/* Salary & Budget Rule */}
-      <div className={cardCls}>
+      <div id="driver-salary-input" className={cardCls}>
         <SectionHeader icon={DollarSign} title="Salary & Budget Rule" description="50/30/20 rule configuration" />
         <form onSubmit={handleSubmit(onSaveSettings)} className="space-y-4">
           <div>
@@ -196,7 +196,7 @@ export default function Settings() {
       </div>
 
       {/* Categories */}
-      <div className={cardCls}>
+      <div id="driver-settings-categories" className={cardCls}>
         <SectionHeader icon={Tag} title="Categories" description="Manage expense categories" />
 
         {/* Add new */}
@@ -263,7 +263,7 @@ export default function Settings() {
       </div>
 
       {/* Payment Modes */}
-      <div className={cardCls}>
+      <div id="driver-settings-payment-modes" className={cardCls}>
         <SectionHeader icon={CreditCard} title="Payment Modes" description="Manage payment methods" />
         <div className="flex gap-2 mb-4">
           <input value={newPmName} onChange={e => setNewPmName(e.target.value)} placeholder="Payment mode name..."

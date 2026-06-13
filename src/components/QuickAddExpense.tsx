@@ -175,7 +175,7 @@ export function QuickAddExpense() {
   const selectedPaymentName = paymentModes.find(p => p.id === selectedPaymentModeId)?.name;
 
   return (
-    <div className="rounded-2xl border border-app-border bg-app-card p-6 shadow-xl relative overflow-hidden transition-all duration-300">
+    <div id="driver-add-expense" className="rounded-2xl border border-app-border bg-app-card p-6 shadow-xl relative overflow-hidden transition-all duration-300">
       {/* Top Header & Progress */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
@@ -222,6 +222,7 @@ export function QuickAddExpense() {
             <div className="relative flex items-center">
               <span className="absolute left-3 text-3xl font-extrabold text-app-fg opacity-60">₹</span>
               <input
+                id="driver-expense-amount"
                 ref={amountInputRef}
                 type="number"
                 value={amount}
@@ -251,7 +252,7 @@ export function QuickAddExpense() {
             </div>
             
             {/* Suggestions Chips */}
-            <div className="space-y-2">
+            <div id="driver-expense-suggestions" className="space-y-2">
               <p className="text-[10px] font-bold uppercase tracking-wider text-[hsl(215,20%,40%)]">Quick Suggestions</p>
               <div className="flex flex-wrap gap-2">
                 {suggestions.map((item: string) => (

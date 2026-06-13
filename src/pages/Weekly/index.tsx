@@ -73,7 +73,7 @@ export default function Weekly() {
       </div>
 
       {/* Weekly Summary Table */}
-      <div className="rounded-2xl border border-app-border bg-app-card overflow-hidden animate-fade-in">
+      <div id="driver-weekly-summary" className="rounded-2xl border border-app-border bg-app-card overflow-hidden animate-fade-in">
         <div className="p-5 border-b border-app-border">
           <h2 className="font-semibold text-app-fg">Weekly Summary</h2>
         </div>

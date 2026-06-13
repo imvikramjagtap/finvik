@@ -60,7 +60,7 @@ export default function Analytics() {
       </div>
 
       {/* Budget vs Actual Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div id="driver-analytics-budget-cards" className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {budgetSummaries.map((b, i) => (
           <div key={b.type} className={cn('rounded-2xl p-5 border glass-card animate-fade-in', {
             Need: 'need-bg', Want: 'want-bg', Saving: 'saving-bg',
@@ -104,7 +104,7 @@ export default function Analytics() {
       </div>
 
       {/* Monthly Trend */}
-      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+      <div id="driver-analytics-charts" className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
         <h2 className="font-semibold text-app-fg mb-5">12-Month Spending Trend</h2>
         <ResponsiveContainer width="100%" height={260}>
           <LineChart data={monthlyTrend}>
@@ -121,7 +121,7 @@ export default function Analytics() {
       </div>
 
       {/* Category Breakdown Bar */}
-      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+      <div id="driver-analytics-category-breakdown" className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
         <h2 className="font-semibold text-app-fg mb-5">Category Breakdown</h2>
         {categoryBreakdown.length === 0 ? (
           <p className="text-[hsl(215,20%,35%)] text-sm text-center py-8">No data for this month</p>

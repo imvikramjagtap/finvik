@@ -70,7 +70,7 @@ export default function Monthly() {
       </div>
 
       {/* Budget Score */}
-      <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 p-6 animate-fade-in">
+      <div id="driver-monthly-score" className="rounded-2xl border border-violet-500/20 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 p-6 animate-fade-in">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-semibold text-app-fg text-base">Budget Score</h2>
@@ -102,7 +102,7 @@ export default function Monthly() {
       </div>
 
       {/* Daily Spend Chart */}
-      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+      <div id="driver-monthly-chart" className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
         <h2 className="font-semibold text-app-fg mb-5">Daily Spending</h2>
         <ResponsiveContainer width="100%" height={240}>
           <AreaChart data={chartData}>
@@ -122,7 +122,7 @@ export default function Monthly() {
       </div>
 
       {/* Category Breakdown */}
-      <div className="rounded-2xl border border-app-border bg-app-card animate-fade-in">
+      <div id="driver-monthly-breakdown" className="rounded-2xl border border-app-border bg-app-card animate-fade-in">
         <div className="p-5 border-b border-app-border">
           <h2 className="font-semibold text-app-fg">Category Breakdown</h2>
         </div>

@@ -45,12 +45,13 @@ export function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav id="driver-nav-sidebar" className="flex-1 p-4 space-y-1">
         {navItems.map(({ path, label, icon: Icon }) => (
           <NavLink
             key={path}
             to={path}
             end={path === '/'}
+            id={path === '/settings' ? 'driver-settings-nav' : undefined}
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group border-none',
@@ -69,6 +70,7 @@ export function Sidebar() {
       {/* Toggles */}
       <div className="px-4 py-3 border-t border-app-border space-y-2">
         <button
+          id="driver-theme-toggle"
           onClick={toggleTheme}
           className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors"
         >
@@ -82,6 +84,7 @@ export function Sidebar() {
         </button>
 
         <button
+          id="driver-private-toggle"
           onClick={togglePrivateMode}
           className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors"
         >

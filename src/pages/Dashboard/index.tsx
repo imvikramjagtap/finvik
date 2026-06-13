@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { BudgetCard } from '@/components/BudgetCard';
 import { QuickAddExpense } from '@/components/QuickAddExpense';
@@ -8,6 +8,7 @@ import { formatCurrency, formatDate, cn } from '@/lib/utils';
 import { Wallet, TrendingDown, Search, Trash2, Edit2, Filter, Receipt } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import type { Expense } from '@/types';
+import { startWelcomeTour, hasSeenTour } from '@/hooks/useTour';
 
 const PIE_COLORS = {
   Need: '#38bdf8',
@@ -44,6 +45,14 @@ export default function Dashboard() {
 
   const catMap = useMemo(() => new Map(categories.map(c => [c.id, c])), [categories]);
   const pmMap = useMemo(() => new Map(paymentModes.map(p => [p.id, p])), [paymentModes]);
+
+  // Auto-trigger welcome tour on first dashboard visit after onboarding
+  useEffect(() => {
+    if (!hasSeenTour()) {
+      const timer = setTimeout(() => startWelcomeTour(), 600);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Filtered expenses list
   const filteredExpenses = useMemo(() => {
@@ -148,7 +157,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+      <div id="driver-stats-row" className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
         <div className="col-span-2 md:col-span-1 rounded-2xl p-4 border border-violet-500/20 bg-violet-500/10">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Total Spent</p>
           <p className="text-2xl font-bold text-violet-600 dark:text-violet-300">{formatCurrency(totalSpent)}</p>
@@ -177,7 +186,7 @@ export default function Dashboard() {
       </div>
 
       {/* Budget Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div id="driver-budget-cards" className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {budgetSummaries.map((b, i) => (
           <div key={b.type} style={{ animationDelay: `${0.1 * i}s` }}>
             <BudgetCard {...b} />
@@ -186,7 +195,7 @@ export default function Dashboard() {
       </div>
 
       {/* Filterable Transaction Ledger */}
-      <div className="rounded-2xl border border-app-border bg-app-card animate-fade-in space-y-4">
+      <div id="driver-recent-transactions" className="rounded-2xl border border-app-border bg-app-card animate-fade-in space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 pb-2 border-b border-app-border gap-4">
           <div className="flex items-center gap-2">
             <Receipt className="w-5 h-5 text-[hsl(215,20%,45%)]" />
