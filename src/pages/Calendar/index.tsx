@@ -100,7 +100,7 @@ export default function Calendar() {
       <div className="grid grid-cols-3 gap-4 animate-fade-in">
         <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Total Spent ({year})</p>
-          <p className="text-lg font-bold text-violet-400">{formatCurrency(totalSpent)}</p>
+          <p className="text-lg font-bold text-violet-600 dark:text-violet-400">{formatCurrency(totalSpent)}</p>
         </div>
         <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Active Days</p>
@@ -108,7 +108,7 @@ export default function Calendar() {
         </div>
         <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Highest Day</p>
-          <p className="text-lg font-bold text-amber-400">{formatCurrency(maxDay.amount)}</p>
+          <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{formatCurrency(maxDay.amount)}</p>
           {maxDay.date && <p className="text-xs text-[hsl(215,20%,35%)] mt-0.5">{maxDay.date}</p>}
         </div>
       </div>

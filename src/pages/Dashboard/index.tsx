@@ -226,8 +226,9 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Transaction Table */}
-        <div className="overflow-x-auto">
+        {/* Transaction Table / List */}
+        {/* Desktop View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-app-border bg-app-muted/30">
@@ -286,6 +287,62 @@ export default function Dashboard() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile View */}
+        <div className="block md:hidden divide-y divide-app-border px-5 pb-4">
+          {filteredExpenses.length === 0 ? (
+            <div className="py-8 text-center text-[hsl(215,20%,35%)] text-sm">
+              No transactions found.
+            </div>
+          ) : (
+            filteredExpenses.map(exp => {
+              const cat = catMap.get(exp.categoryId);
+              const pm = pmMap.get(exp.paymentModeId);
+              const budgetType = cat?.budgetType ?? 'Want';
+              return (
+                <div key={exp.id} className="py-4 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={cn(
+                      'w-10 h-10 rounded-xl flex items-center justify-center text-base flex-shrink-0',
+                      budgetType === 'Need' ? 'bg-sky-500/10 text-sky-400' : budgetType === 'Saving' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
+                    )}>
+                      {budgetType === 'Need' ? '🏠' : budgetType === 'Saving' ? '💰' : '✨'}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-app-fg truncate">{exp.description}</p>
+                      <p className="text-xs text-[hsl(215,20%,45%)] mt-0.5">
+                        {formatDate(exp.date)} · {cat?.name} · {pm?.name}
+                      </p>
+                      {exp.notes && (
+                        <p className="text-[10px] text-[hsl(215,20%,35%)] italic mt-1 bg-app-muted/50 px-2 py-0.5 rounded border border-app-border/10 inline-block truncate max-w-full">
+                          {exp.notes}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                    <span className={cn('text-sm font-bold', typeColors[budgetType])}>
+                      {formatCurrency(exp.amount)}
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button onClick={() => handleEdit(exp)}
+                        className="w-7 h-7 rounded-lg bg-app-muted flex items-center justify-center text-app-fg border border-app-border hover:bg-violet-500/20 hover:text-violet-400 transition-all">
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button onClick={() => handleDelete(exp.id)}
+                        className={cn('w-7 h-7 rounded-lg flex items-center justify-center transition-all text-app-fg',
+                          confirmDelete === exp.id
+                            ? 'bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse'
+                            : 'bg-app-muted border border-app-border hover:bg-red-500/20 hover:text-red-400')}>
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
 

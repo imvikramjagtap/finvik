@@ -51,9 +51,9 @@ export function Sidebar() {
             end={path === '/'}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group border border-transparent',
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group border-none',
                 isActive
-                  ? 'bg-violet-500/10 text-violet-400 dark:text-violet-300 border-violet-500/20'
+                  ? 'bg-violet-500/10 text-violet-600 dark:text-violet-300'
                   : 'text-[hsl(215,20%,55%)] hover:bg-app-muted hover:text-app-fg'
               )
             }

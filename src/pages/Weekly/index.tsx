@@ -77,7 +77,8 @@ export default function Weekly() {
         <div className="p-5 border-b border-app-border">
           <h2 className="font-semibold text-app-fg">Weekly Summary</h2>
         </div>
-        <div className="overflow-x-auto">
+        {/* Desktop View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-app-border">
@@ -118,6 +119,41 @@ export default function Weekly() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile View */}
+        <div className="block md:hidden divide-y divide-app-border">
+          {weeklySummaries.length === 0 ? (
+            <p className="px-4 py-8 text-center text-[hsl(215,20%,35%)] text-sm">No data for this month</p>
+          ) : (
+            weeklySummaries.map(w => (
+              <div key={w.week} className="p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="text-sm font-semibold text-app-fg">Week {w.week}</span>
+                    <span className="text-xs text-[hsl(215,20%,45%)] ml-2">({w.label})</span>
+                  </div>
+                  <span className={cn('inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border',
+                    w.isOverspent
+                      ? 'bg-red-500/10 text-red-500 dark:text-red-400 border-red-500/20'
+                      : 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20')}>
+                    {w.isOverspent ? <AlertTriangle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
+                    {w.isOverspent ? 'Over' : 'OK'}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-[hsl(215,20%,45%)]">Spent: <span className={cn('font-semibold', w.isOverspent ? 'text-red-500 dark:text-red-400' : 'text-app-fg')}>{formatCurrency(w.spent)}</span></span>
+                  <span className="text-[hsl(215,20%,45%)]">Limit: <span className="font-semibold text-app-fg">{formatCurrency(w.limit)}</span></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
+                    <div className="h-1.5 rounded-full transition-all" style={{ width: `${Math.min(w.percentage, 100)}%`, backgroundColor: w.isOverspent ? '#ef4444' : '#10b981' }} />
+                  </div>
+                  <span className={cn('text-xs font-bold', w.isOverspent ? 'text-red-500 dark:text-red-400' : 'text-emerald-500 dark:text-emerald-400')}>{w.percentage.toFixed(0)}%</span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
