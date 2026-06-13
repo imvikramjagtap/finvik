@@ -9,6 +9,7 @@ import Weekly from '@/pages/Weekly';
 import Monthly from '@/pages/Monthly';
 import Calendar from '@/pages/Calendar';
 import Settings from '@/pages/Settings';
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react"
 import Help from '@/pages/Help';
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
         </main>
         <MobileNav />
       </div>
+      <VercelAnalytics />
     </BrowserRouter>
   );
 }
