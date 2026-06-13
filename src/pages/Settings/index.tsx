@@ -7,7 +7,7 @@ import { formatCurrency, downloadFile, cn } from '@/lib/utils';
 import { storageService } from '@/lib/storage';
 import {
   Settings2, Plus, Trash2, Edit2, Check, X, Download, Upload,
-  DollarSign, PieChart, CreditCard, Tag, Calendar,
+  DollarSign, PieChart, CreditCard, Tag, Calendar, AlertTriangle
 } from 'lucide-react';
 import type { Category, PaymentMode } from '@/types';
 
@@ -46,9 +46,11 @@ export default function Settings() {
     settings, saveSettings,
     categories, addCategory, updateCategory, deleteCategory,
     paymentModes, addPaymentMode, updatePaymentMode, deletePaymentMode,
-    importData,
+    importData, resetData,
     privateMode,
   } = useAppStore();
+
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   // Settings form
   const { register, handleSubmit, formState: { errors, isSubmitting, isDirty }, reset } = useForm<SettingsForm>({
@@ -327,6 +329,55 @@ export default function Settings() {
           </label>
         </div>
       </div>
+
+      {/* Danger Zone */}
+      <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6 animate-fade-in">
+        <SectionHeader icon={AlertTriangle} title="Danger Zone" description="Irreversible actions" />
+        <div className="bg-app-card border border-red-500/20 rounded-xl p-5">
+          <h3 className="font-semibold text-app-fg mb-2">Reset Application Data</h3>
+          <p className="text-xs text-[hsl(215,20%,45%)] mb-4">
+            This will permanently delete all your expenses, custom categories, payment modes, and settings. This action cannot be undone.
+          </p>
+          <button
+            onClick={() => setShowResetConfirm(true)}
+            className="px-4 py-2 rounded-lg bg-red-500/10 text-red-500 text-sm font-medium hover:bg-red-500 hover:text-white transition-all"
+          >
+            Reset All Data
+          </button>
+        </div>
+      </div>
+
+      {/* Reset Confirmation Modal */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-app-card border border-app-border rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-slide-in">
+            <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4">
+              <AlertTriangle className="w-6 h-6 text-red-500" />
+            </div>
+            <h2 className="text-xl font-bold text-app-fg mb-2">Are you absolutely sure?</h2>
+            <p className="text-sm text-[hsl(215,20%,45%)] mb-6">
+              This will wipe everything. All your financial history, categories, and settings will be permanently lost.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowResetConfirm(false)}
+                className="flex-1 py-2.5 rounded-xl border border-app-border text-sm font-semibold text-app-fg hover:bg-app-muted transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowResetConfirm(false);
+                  resetData();
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20"
+              >
+                Yes, reset it all
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

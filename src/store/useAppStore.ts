@@ -37,6 +37,7 @@ interface AppStore {
   saveSettings: (settings: AppSettings) => void;
 
   importData: (json: string) => void;
+  resetData: () => void;
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
@@ -166,5 +167,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
   importData: (json) => {
     storageService.importJSON(json);
     get().loadAll();
+  },
+
+  resetData: () => {
+    storageService.clearAll();
+    get().loadAll();
+    // Also reset tour state and onboarding flag
+    localStorage.removeItem('myfintech_tour_seen');
+    localStorage.removeItem('myfintech_onboarded');
+    window.location.reload();
   },
 }));

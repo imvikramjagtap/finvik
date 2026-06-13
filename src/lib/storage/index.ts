@@ -109,4 +109,8 @@ export const storageService = {
     if (data.paymentModes) setItem(KEYS.PAYMENT_MODES, data.paymentModes);
     if (data.settings) setItem(KEYS.SETTINGS, data.settings);
   },
+
+  clearAll: (): void => {
+    Object.values(KEYS).forEach(key => localStorage.removeItem(key));
+  },
 };
