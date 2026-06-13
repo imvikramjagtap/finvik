@@ -101,8 +101,11 @@ export function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-app-border">
-        <p className="text-[hsl(215,20%,35%)] text-xs text-center">v1.0 · Data stored locally</p>
+      <div className="p-4 border-t border-app-border text-center space-y-2">
+        <p className="text-[hsl(215,20%,35%)] text-xs">v1.0 · Data stored locally</p>
+        <p className="text-[hsl(215,20%,40%)] text-xs flex items-center justify-center gap-1">
+          Built by <a href="https://vikramjagtap.dev/" target="_blank" rel="noopener noreferrer" className="font-semibold text-violet-400 hover:text-violet-300 transition-colors">Vikram Jagtap</a>
+        </p>
       </div>
     </aside>
   );
