@@ -27,6 +27,35 @@
   --info: 217 91% 60%;
 }
 
+.light {
+  --background: 220 33% 98%;
+  --foreground: 224 71% 4%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 71% 4%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71% 4%;
+  --primary: 262 83% 60%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 220 14.3% 95.9%;
+  --secondary-foreground: 220.9 39.3% 11%;
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 8.9% 46.1%;
+  --accent: 220 14.3% 95.9%;
+  --accent-foreground: 220.9 39.3% 11%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 262 83% 60%;
+}
+
+/* Theme helper classes mapping to Tailwind custom attributes */
+.bg-app-bg { background-color: hsl(var(--background)); }
+.text-app-fg { color: hsl(var(--foreground)); }
+.bg-app-card { background-color: hsl(var(--card)); }
+.border-app-border { border-color: hsl(var(--border)); }
+.bg-app-muted { background-color: hsl(var(--muted)); }
+.text-app-muted { color: hsl(var(--muted-foreground)); }
+.bg-app-input { background-color: hsl(var(--input)); }
+
 * {
   box-sizing: border-box;
   border-color: hsl(var(--border));
@@ -71,6 +100,10 @@ body {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.light .glass-card {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Gradient text */

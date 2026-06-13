@@ -25,6 +25,9 @@ interface AppStore {
   updatePaymentMode: (id: string, mode: Omit<PaymentMode, 'id'>) => void;
   deletePaymentMode: (id: string) => void;
 
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
+
   saveSettings: (settings: AppSettings) => void;
 
   importData: (json: string) => void;
@@ -35,14 +38,33 @@ export const useAppStore = create<AppStore>((set, get) => ({
   categories: [],
   paymentModes: [],
   settings: storageService.getSettings(),
+  theme: (localStorage.getItem('myfintech_theme') as 'light' | 'dark') || 'dark',
 
   loadAll: () => {
+    const currentTheme = (localStorage.getItem('myfintech_theme') as 'light' | 'dark') || 'dark';
+    if (currentTheme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
     set({
+      theme: currentTheme,
       expenses: storageService.getExpenses(),
       categories: storageService.getCategories(),
       paymentModes: storageService.getPaymentModes(),
       settings: storageService.getSettings(),
     });
+  },
+
+  toggleTheme: () => {
+    const nextTheme = get().theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('myfintech_theme', nextTheme);
+    set({ theme: nextTheme });
+    if (nextTheme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
   },
 
   addExpense: (expenseData) => {

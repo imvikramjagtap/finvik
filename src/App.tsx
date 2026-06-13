@@ -19,9 +19,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen bg-[hsl(222,47%,6%)]">
+      <div className="flex min-h-screen bg-app-bg text-app-fg">
         <Sidebar />
-        <main className="flex-1 md:ml-64 min-h-screen">
+        <main className="flex-1 md:ml-64 min-h-screen pt-14 md:pt-0">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />

@@ -15,8 +15,8 @@ function addMonths(month: string, delta: number): string {
 }
 
 const tooltipStyle = {
-  contentStyle: { backgroundColor: 'hsl(222,47%,8%)', border: '1px solid hsl(217,33%,20%)', borderRadius: '8px' },
-  labelStyle: { color: 'hsl(213,31%,91%)' },
+  contentStyle: { backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' },
+  labelStyle: { color: 'hsl(var(--foreground))' },
 };
 
 const typeColors = { Need: '#38bdf8', Want: '#fbbf24', Saving: '#4ade80' };
@@ -53,17 +53,17 @@ export default function Monthly() {
       {/* Header */}
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-white">Monthly Analysis</h1>
+          <h1 className="text-2xl font-bold text-app-fg">Monthly Analysis</h1>
           <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">Total spent: {formatCurrency(totalSpent)}</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setMonth(m => addMonths(m, -1))}
-            className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] transition-colors">
+            className="w-8 h-8 rounded-lg bg-app-muted flex items-center justify-center hover:opacity-80 border border-app-border text-[hsl(215,20%,55%)] transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-medium text-white min-w-[140px] text-center">{getMonthLabel(month)}</span>
+          <span className="text-sm font-medium text-app-fg min-w-[140px] text-center">{getMonthLabel(month)}</span>
           <button onClick={() => setMonth(m => addMonths(m, 1))}
-            className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] transition-colors">
+            className="w-8 h-8 rounded-lg bg-app-muted flex items-center justify-center hover:opacity-80 border border-app-border text-[hsl(215,20%,55%)] transition-colors">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -73,7 +73,7 @@ export default function Monthly() {
       <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 p-6 animate-fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-semibold text-white text-base">Budget Score</h2>
+            <h2 className="font-semibold text-app-fg text-base">Budget Score</h2>
             <p className="text-xs text-[hsl(215,20%,45%)] mt-0.5">Based on spending habits</p>
           </div>
           <div className="text-right">
@@ -91,7 +91,7 @@ export default function Monthly() {
             <div key={s.label}>
               <div className="flex justify-between text-xs mb-1">
                 <span className="text-[hsl(215,20%,45%)]">{s.label}</span>
-                <span className="text-white font-medium">{s.score}/{s.max}</span>
+                <span className="text-app-fg font-medium">{s.score}/{s.max}</span>
               </div>
               <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
                 <div className="h-1.5 rounded-full bg-violet-400 transition-all duration-700" style={{ width: `${(s.score / s.max) * 100}%` }} />
@@ -102,8 +102,8 @@ export default function Monthly() {
       </div>
 
       {/* Daily Spend Chart */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
-        <h2 className="font-semibold text-white mb-5">Daily Spending</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+        <h2 className="font-semibold text-app-fg mb-5">Daily Spending</h2>
         <ResponsiveContainer width="100%" height={240}>
           <AreaChart data={chartData}>
             <defs>
@@ -112,29 +112,29 @@ export default function Monthly() {
                 <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,14%)" />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis dataKey="day" tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
-            <Tooltip {...tooltipStyle} formatter={(v: number) => formatCurrency(v)} labelFormatter={v => `Day ${v}`} />
+            <Tooltip {...tooltipStyle} formatter={(v: any) => formatCurrency(Number(v || 0))} labelFormatter={v => `Day ${v}`} />
             <Area type="monotone" dataKey="amount" name="Spent" stroke="#8b5cf6" strokeWidth={2} fill="url(#spendGrad)" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
       {/* Category Breakdown */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] animate-fade-in">
-        <div className="p-5 border-b border-[hsl(217,33%,14%)]">
-          <h2 className="font-semibold text-white">Category Breakdown</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card animate-fade-in">
+        <div className="p-5 border-b border-app-border">
+          <h2 className="font-semibold text-app-fg">Category Breakdown</h2>
         </div>
         {categoryBreakdown.length === 0 ? (
           <p className="text-[hsl(215,20%,35%)] text-sm text-center py-8">No expenses this month</p>
         ) : (
-          <div className="divide-y divide-[hsl(217,33%,11%)]">
+          <div className="divide-y divide-app-border">
             {categoryBreakdown.map(cat => (
-              <div key={cat.categoryId} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[hsl(217,33%,10%)] transition-colors">
+              <div key={cat.categoryId} className="flex items-center gap-4 px-5 py-3.5 hover:bg-app-muted transition-colors">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-sm font-medium text-white truncate">{cat.categoryName}</span>
+                    <span className="text-sm font-medium text-app-fg truncate">{cat.categoryName}</span>
                     <span className={cn('inline-flex px-1.5 py-0.5 rounded-full text-xs border', typeBadge[cat.budgetType])}>{cat.budgetType}</span>
                   </div>
                   <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
@@ -142,7 +142,7 @@ export default function Monthly() {
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <p className="text-sm font-semibold text-white">{formatCurrency(cat.amount)}</p>
+                  <p className="text-sm font-semibold text-app-fg">{formatCurrency(cat.amount)}</p>
                   <p className="text-xs text-[hsl(215,20%,35%)]">{cat.percentage.toFixed(1)}%</p>
                 </div>
               </div>

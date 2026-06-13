@@ -17,9 +17,9 @@ const typeBadge = {
 };
 
 const tooltipStyle = {
-  contentStyle: { backgroundColor: 'hsl(222,47%,8%)', border: '1px solid hsl(217,33%,20%)', borderRadius: '8px' },
-  labelStyle: { color: 'hsl(213,31%,91%)' },
-  itemStyle: { color: 'hsl(215,20%,65%)' },
+  contentStyle: { backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' },
+  labelStyle: { color: 'hsl(var(--foreground))' },
+  itemStyle: { color: 'hsl(var(--muted-foreground))' },
 };
 
 export default function Analytics() {
@@ -55,7 +55,7 @@ export default function Analytics() {
   return (
     <div className="p-4 md:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-white">Analytics</h1>
+        <h1 className="text-2xl font-bold text-app-fg">Analytics</h1>
         <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">Budget vs Actual · Trends · Breakdown</p>
       </div>
 
@@ -71,13 +71,13 @@ export default function Analytics() {
             </div>
             <div className="space-y-1">
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
-                <span>Budget</span><span className="text-white font-medium">{formatCurrency(b.budget)}</span>
+                <span>Budget</span><span className="text-app-fg font-medium">{formatCurrency(b.budget)}</span>
               </div>
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
                 <span>Spent</span><span className="font-medium" style={{ color: typeColors[b.type] }}>{formatCurrency(b.spent)}</span>
               </div>
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
-                <span>Remaining</span><span className="text-white font-medium">{formatCurrency(b.remaining)}</span>
+                <span>Remaining</span><span className="text-app-fg font-medium">{formatCurrency(b.remaining)}</span>
               </div>
             </div>
             <div className="mt-3 w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
@@ -88,8 +88,8 @@ export default function Analytics() {
       </div>
 
       {/* Spending % */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
-        <h2 className="font-semibold text-white mb-4">Spending Allocation This Month</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+        <h2 className="font-semibold text-app-fg mb-4">Spending Allocation This Month</h2>
         <div className="grid grid-cols-3 gap-4">
           {([['Need', percentages.need, '#38bdf8'], ['Want', percentages.want, '#fbbf24'], ['Saving', percentages.saving, '#4ade80']] as const).map(([type, pct, color]) => (
             <div key={type} className="text-center">
@@ -104,15 +104,15 @@ export default function Analytics() {
       </div>
 
       {/* Monthly Trend */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
-        <h2 className="font-semibold text-white mb-5">12-Month Spending Trend</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+        <h2 className="font-semibold text-app-fg mb-5">12-Month Spending Trend</h2>
         <ResponsiveContainer width="100%" height={260}>
           <LineChart data={monthlyTrend}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,14%)" />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis dataKey="label" tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
-            <Tooltip {...tooltipStyle} formatter={(v: number) => formatCurrency(v)} />
-            <Legend iconType="circle" iconSize={8} formatter={v => <span style={{ color: 'hsl(215,20%,65%)', fontSize: '12px' }}>{v}</span>} />
+            <Tooltip {...tooltipStyle} formatter={(v: any) => formatCurrency(Number(v || 0))} />
+            <Legend iconType="circle" iconSize={8} formatter={v => <span className="text-app-muted text-xs">{v}</span>} />
             <Line type="monotone" dataKey="need" name="Need" stroke="#38bdf8" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="want" name="Want" stroke="#fbbf24" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="saving" name="Saving" stroke="#4ade80" strokeWidth={2} dot={false} />
@@ -121,17 +121,17 @@ export default function Analytics() {
       </div>
 
       {/* Category Breakdown Bar */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
-        <h2 className="font-semibold text-white mb-5">Category Breakdown</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+        <h2 className="font-semibold text-app-fg mb-5">Category Breakdown</h2>
         {categoryBreakdown.length === 0 ? (
           <p className="text-[hsl(215,20%,35%)] text-sm text-center py-8">No data for this month</p>
         ) : (
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={categoryBreakdown.slice(0, 10)} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,14%)" horizontal={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} />
               <XAxis type="number" tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
               <YAxis type="category" dataKey="categoryName" tick={{ fill: 'hsl(215,20%,55%)', fontSize: 11 }} axisLine={false} tickLine={false} width={110} />
-              <Tooltip {...tooltipStyle} formatter={(v: number) => formatCurrency(v)} />
+              <Tooltip {...tooltipStyle} formatter={(v: any) => formatCurrency(Number(v || 0))} />
               <Bar dataKey="amount" name="Spent" fill="#8b5cf6" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -139,20 +139,20 @@ export default function Analytics() {
       </div>
 
       {/* Top Categories Table */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] animate-fade-in">
-        <div className="p-5 border-b border-[hsl(217,33%,14%)]">
-          <h2 className="font-semibold text-white">Top Spending Categories</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card animate-fade-in">
+        <div className="p-5 border-b border-app-border">
+          <h2 className="font-semibold text-app-fg">Top Spending Categories</h2>
         </div>
-        <div className="divide-y divide-[hsl(217,33%,11%)]">
+        <div className="divide-y divide-app-border">
           {topCategories.length === 0 ? (
             <p className="text-[hsl(215,20%,35%)] text-sm text-center py-8">No data this month</p>
           ) : (
             topCategories.map((cat, i) => (
-              <div key={cat.categoryId} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[hsl(217,33%,10%)] transition-colors">
+              <div key={cat.categoryId} className="flex items-center gap-4 px-5 py-3.5 hover:bg-app-muted transition-colors">
                 <span className="text-[hsl(215,20%,35%)] text-sm font-mono w-5">#{i + 1}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-white truncate">{cat.categoryName}</span>
+                    <span className="text-sm font-medium text-app-fg truncate">{cat.categoryName}</span>
                     <span className={cn('inline-flex px-1.5 py-0.5 rounded-full text-xs border', typeBadge[cat.budgetType])}>{cat.budgetType}</span>
                   </div>
                   <div className="mt-1.5 w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
@@ -160,7 +160,7 @@ export default function Analytics() {
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <p className="text-sm font-semibold text-white">{formatCurrency(cat.amount)}</p>
+                  <p className="text-sm font-semibold text-app-fg">{formatCurrency(cat.amount)}</p>
                   <p className="text-xs text-[hsl(215,20%,35%)]">{cat.percentage.toFixed(1)}%</p>
                 </div>
               </div>

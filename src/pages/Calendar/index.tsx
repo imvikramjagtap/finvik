@@ -8,10 +8,10 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const levelColors = [
-  'bg-[hsl(217,33%,14%)]',
-  'bg-violet-500/25',
-  'bg-violet-500/45',
-  'bg-violet-500/70',
+  'bg-app-muted border border-app-border/10',
+  'bg-violet-500/20 dark:bg-violet-500/25',
+  'bg-violet-500/40 dark:bg-violet-500/45',
+  'bg-violet-500/70 dark:bg-violet-500/70',
   'bg-violet-500',
 ];
 
@@ -80,17 +80,17 @@ export default function Calendar() {
       {/* Header */}
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-white">Calendar View</h1>
+          <h1 className="text-2xl font-bold text-app-fg">Calendar View</h1>
           <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">GitHub-style spending heatmap</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setYear(y => y - 1)}
-            className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] transition-colors">
+            className="w-8 h-8 rounded-lg bg-app-muted flex items-center justify-center hover:opacity-80 border border-app-border text-[hsl(215,20%,55%)] transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-base font-bold text-white w-16 text-center">{year}</span>
+          <span className="text-base font-bold text-app-fg w-16 text-center">{year}</span>
           <button onClick={() => setYear(y => y + 1)}
-            className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] transition-colors">
+            className="w-8 h-8 rounded-lg bg-app-muted flex items-center justify-center hover:opacity-80 border border-app-border text-[hsl(215,20%,55%)] transition-colors">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -98,15 +98,15 @@ export default function Calendar() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 animate-fade-in">
-        <div className="rounded-2xl p-4 border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)]">
+        <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Total Spent ({year})</p>
           <p className="text-lg font-bold text-violet-400">{formatCurrency(totalSpent)}</p>
         </div>
-        <div className="rounded-2xl p-4 border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)]">
+        <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Active Days</p>
-          <p className="text-lg font-bold text-white">{activeDays}</p>
+          <p className="text-lg font-bold text-app-fg">{activeDays}</p>
         </div>
-        <div className="rounded-2xl p-4 border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)]">
+        <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Highest Day</p>
           <p className="text-lg font-bold text-amber-400">{formatCurrency(maxDay.amount)}</p>
           {maxDay.date && <p className="text-xs text-[hsl(215,20%,35%)] mt-0.5">{maxDay.date}</p>}
@@ -114,7 +114,7 @@ export default function Calendar() {
       </div>
 
       {/* Heatmap */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in overflow-x-auto">
+      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in overflow-x-auto">
         <div className="relative min-w-[600px]">
           {/* Month labels */}
           <div className="flex mb-1" style={{ paddingLeft: '28px' }}>
@@ -179,11 +179,11 @@ export default function Calendar() {
       {/* Tooltip */}
       {tooltip && (
         <div
-          className="fixed z-50 bg-[hsl(222,47%,10%)] border border-[hsl(217,33%,25%)] rounded-lg px-3 py-2 pointer-events-none shadow-xl"
+          className="fixed z-50 bg-app-card border border-app-border rounded-lg px-3 py-2 pointer-events-none shadow-xl"
           style={{ left: tooltip.x + 20, top: tooltip.y - 40 }}
         >
           <p className="text-xs text-[hsl(215,20%,55%)]">{tooltip.date}</p>
-          <p className="text-sm font-semibold text-white">{tooltip.amount > 0 ? formatCurrency(tooltip.amount) : 'No spend'}</p>
+          <p className="text-sm font-semibold text-app-fg">{tooltip.amount > 0 ? formatCurrency(tooltip.amount) : 'No spend'}</p>
         </div>
       )}
     </div>

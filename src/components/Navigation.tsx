@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   Receipt,
@@ -9,8 +9,11 @@ import {
   Calendar,
   Settings,
   TrendingUp,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAppStore } from '@/store/useAppStore';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -23,16 +26,18 @@ const navItems = [
 ];
 
 export function Sidebar() {
+  const { theme, toggleTheme } = useAppStore();
+
   return (
-    <aside className="hidden md:flex flex-col w-64 min-h-screen bg-[hsl(222,47%,7%)] border-r border-[hsl(217,33%,14%)] fixed left-0 top-0 z-50">
+    <aside className="hidden md:flex flex-col w-64 min-h-screen bg-app-card border-r border-app-border fixed left-0 top-0 z-50">
       {/* Logo */}
-      <div className="p-6 border-b border-[hsl(217,33%,14%)]">
+      <div className="p-6 border-b border-app-border">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="font-bold text-white text-sm">My FinTech</p>
+            <p className="font-bold text-app-fg text-sm">My FinTech</p>
             <p className="text-[hsl(215,20%,45%)] text-xs">Personal Finance</p>
           </div>
         </div>
@@ -47,10 +52,10 @@ export function Sidebar() {
             end={path === '/'}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group',
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group border border-transparent',
                 isActive
-                  ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
-                  : 'text-[hsl(215,20%,55%)] hover:bg-[hsl(217,33%,14%)] hover:text-[hsl(213,31%,91%)]'
+                  ? 'bg-violet-500/10 text-violet-400 dark:text-violet-300 border-violet-500/20'
+                  : 'text-[hsl(215,20%,55%)] hover:bg-app-muted hover:text-app-fg'
               )
             }
           >
@@ -60,8 +65,24 @@ export function Sidebar() {
         ))}
       </nav>
 
+      {/* Theme Toggle */}
+      <div className="px-4 py-3 border-t border-app-border">
+        <button
+          onClick={toggleTheme}
+          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted border border-transparent hover:border-app-border/10 transition-colors"
+        >
+          <span className="flex items-center gap-3">
+            {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
+            <span>{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
+          </span>
+          <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-app-muted border border-app-border text-[hsl(215,20%,45%)]">
+            Toggle
+          </span>
+        </button>
+      </div>
+
       {/* Footer */}
-      <div className="p-4 border-t border-[hsl(217,33%,14%)]">
+      <div className="p-4 border-t border-app-border">
         <p className="text-[hsl(215,20%,35%)] text-xs text-center">v1.0 · Data stored locally</p>
       </div>
     </aside>
@@ -69,40 +90,62 @@ export function Sidebar() {
 }
 
 export function MobileNav() {
+  const { theme, toggleTheme } = useAppStore();
+
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[hsl(222,47%,7%)] border-t border-[hsl(217,33%,14%)] px-2 py-1 safe-area-bottom">
-      <div className="flex justify-around">
-        {navItems.slice(0, 6).map(({ path, label, icon: Icon }) => (
+    <>
+      {/* Mobile Top Header */}
+      <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-app-card border-b border-app-border flex items-center justify-between px-4 z-50">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
+            <TrendingUp className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-bold text-app-fg text-sm">My FinTech</span>
+        </div>
+        <button
+          onClick={toggleTheme}
+          className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
+        </button>
+      </header>
+
+      {/* Mobile Bottom Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-app-card border-t border-app-border px-2 py-1 safe-area-bottom">
+        <div className="flex justify-around">
+          {navItems.slice(0, 6).map(({ path, label, icon: Icon }) => (
+            <NavLink
+              key={path}
+              to={path}
+              end={path === '/'}
+              className={({ isActive }) =>
+                cn(
+                  'flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200',
+                  isActive
+                    ? 'text-violet-500 dark:text-violet-400 font-semibold'
+                    : 'text-[hsl(215,20%,45%)]'
+                )
+              }
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{label}</span>
+            </NavLink>
+          ))}
           <NavLink
-            key={path}
-            to={path}
-            end={path === '/'}
+            to="/settings"
             className={({ isActive }) =>
               cn(
                 'flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200',
-                isActive
-                  ? 'text-violet-400'
-                  : 'text-[hsl(215,20%,45%)]'
+                isActive ? 'text-violet-500 dark:text-violet-400 font-semibold' : 'text-[hsl(215,20%,45%)]'
               )
             }
           >
-            <Icon className="w-5 h-5" />
-            <span className="text-[10px] font-medium">{label}</span>
+            <Settings className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Settings</span>
           </NavLink>
-        ))}
-        <NavLink
-          to="/settings"
-          className={({ isActive }) =>
-            cn(
-              'flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200',
-              isActive ? 'text-violet-400' : 'text-[hsl(215,20%,45%)]'
-            )
-          }
-        >
-          <Settings className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Settings</span>
-        </NavLink>
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </>
   );
 }

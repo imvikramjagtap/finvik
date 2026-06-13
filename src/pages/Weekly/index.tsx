@@ -14,8 +14,8 @@ function addMonths(month: string, delta: number): string {
 }
 
 const tooltipStyle = {
-  contentStyle: { backgroundColor: 'hsl(222,47%,8%)', border: '1px solid hsl(217,33%,20%)', borderRadius: '8px' },
-  labelStyle: { color: 'hsl(213,31%,91%)' },
+  contentStyle: { backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' },
+  labelStyle: { color: 'hsl(var(--foreground))' },
 };
 
 export default function Weekly() {
@@ -41,17 +41,17 @@ export default function Weekly() {
       {/* Header */}
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-white">Weekly Analysis</h1>
+          <h1 className="text-2xl font-bold text-app-fg">Weekly Analysis</h1>
           <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">Limit: {formatCurrency(weeklyLimit)}/week</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setMonth(m => addMonths(m, -1))}
-            className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] transition-colors">
+            className="w-8 h-8 rounded-lg bg-app-muted flex items-center justify-center hover:opacity-80 border border-app-border text-[hsl(215,20%,55%)] transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-medium text-white min-w-[120px] text-center">{getMonthLabel(month)}</span>
+          <span className="text-sm font-medium text-app-fg min-w-[120px] text-center">{getMonthLabel(month)}</span>
           <button onClick={() => setMonth(m => addMonths(m, 1))}
-            className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] transition-colors">
+            className="w-8 h-8 rounded-lg bg-app-muted flex items-center justify-center hover:opacity-80 border border-app-border text-[hsl(215,20%,55%)] transition-colors">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -62,10 +62,10 @@ export default function Weekly() {
         {[
           { label: 'Total Spent', value: formatCurrency(totalSpent), color: 'text-violet-400' },
           { label: 'Within Limit', value: `${adherentCount}/${weeklySummaries.length} weeks`, color: 'text-emerald-400' },
-          { label: 'Avg/Week', value: formatCurrency(weeklySummaries.length ? Math.round(totalSpent / weeklySummaries.length) : 0), color: 'text-white' },
+          { label: 'Avg/Week', value: formatCurrency(weeklySummaries.length ? Math.round(totalSpent / weeklySummaries.length) : 0), color: 'text-app-fg' },
           { label: 'Over Limit', value: `${weeklySummaries.length - adherentCount} weeks`, color: weeklySummaries.some(w => w.isOverspent) ? 'text-red-400' : 'text-emerald-400' },
         ].map(s => (
-          <div key={s.label} className="rounded-2xl p-4 border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] animate-fade-in">
+          <div key={s.label} className="rounded-2xl p-4 border border-app-border bg-app-card animate-fade-in">
             <p className="text-xs text-[hsl(215,20%,45%)] mb-1">{s.label}</p>
             <p className={cn('text-lg font-bold', s.color)}>{s.value}</p>
           </div>
@@ -73,14 +73,14 @@ export default function Weekly() {
       </div>
 
       {/* Weekly Summary Table */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] overflow-hidden animate-fade-in">
-        <div className="p-5 border-b border-[hsl(217,33%,14%)]">
-          <h2 className="font-semibold text-white">Weekly Summary</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card overflow-hidden animate-fade-in">
+        <div className="p-5 border-b border-app-border">
+          <h2 className="font-semibold text-app-fg">Weekly Summary</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[hsl(217,33%,14%)]">
+              <tr className="border-b border-app-border">
                 {['Week', 'Period', 'Spent', 'Limit', '%', 'Status'].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[hsl(215,20%,40%)] uppercase tracking-wider">{h}</th>
                 ))}
@@ -90,11 +90,11 @@ export default function Weekly() {
               {weeklySummaries.length === 0 ? (
                 <tr><td colSpan={6} className="px-4 py-8 text-center text-[hsl(215,20%,35%)] text-sm">No data for this month</td></tr>
               ) : weeklySummaries.map(w => (
-                <tr key={w.week} className="border-b border-[hsl(217,33%,10%)] hover:bg-[hsl(217,33%,10%)] transition-colors">
+                <tr key={w.week} className="border-b border-app-border hover:bg-app-muted transition-colors">
                   <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,55%)] font-medium">W{w.week}</td>
                   <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,45%)] whitespace-nowrap">{w.label}</td>
                   <td className="px-4 py-3.5">
-                    <span className={cn('text-sm font-semibold', w.isOverspent ? 'text-red-400' : 'text-white')}>{formatCurrency(w.spent)}</span>
+                    <span className={cn('text-sm font-semibold', w.isOverspent ? 'text-red-400' : 'text-app-fg')}>{formatCurrency(w.spent)}</span>
                   </td>
                   <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,45%)]">{formatCurrency(w.limit)}</td>
                   <td className="px-4 py-3.5">
@@ -122,17 +122,17 @@ export default function Weekly() {
       </div>
 
       {/* Weekly Trend Chart */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
-        <h2 className="font-semibold text-white mb-5">Year-to-Date Weekly Trend</h2>
+      <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+        <h2 className="font-semibold text-app-fg mb-5">Year-to-Date Weekly Trend</h2>
         {yearTrend.length === 0 ? (
           <p className="text-[hsl(215,20%,35%)] text-sm text-center py-8">No data yet</p>
         ) : (
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={yearTrend}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,14%)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="week" tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `W${v}`} />
               <YAxis tick={{ fill: 'hsl(215,20%,45%)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
-              <Tooltip {...tooltipStyle} formatter={(v: number) => formatCurrency(v)} />
+              <Tooltip {...tooltipStyle} formatter={(v: any) => formatCurrency(Number(v || 0))} />
               <ReferenceLine y={weeklyLimit} stroke="#f59e0b" strokeDasharray="5 5" label={{ value: 'Limit', fill: '#f59e0b', fontSize: 11 }} />
               <Bar dataKey="spent" name="Spent" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
             </BarChart>

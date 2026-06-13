@@ -59,7 +59,7 @@ export default function Expenses() {
     setDialogOpen(true);
   }
 
-  const inputCls = 'bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,20%)] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50';
+  const inputCls = 'bg-app-muted border border-app-border rounded-lg px-3 py-2 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50';
   const selectCls = `${inputCls} cursor-pointer`;
 
   return (
@@ -67,7 +67,7 @@ export default function Expenses() {
       {/* Header */}
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-white">Expenses</h1>
+          <h1 className="text-2xl font-bold text-app-fg">Expenses</h1>
           <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">{filtered.length} transactions · {formatCurrency(totalFiltered)}</p>
         </div>
         <button onClick={handleAdd}
@@ -78,7 +78,7 @@ export default function Expenses() {
       </div>
 
       {/* Filters */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-4 animate-fade-in">
+      <div className="rounded-2xl border border-app-border bg-app-card p-4 animate-fade-in">
         <div className="flex items-center gap-2 mb-3">
           <Filter className="w-4 h-4 text-[hsl(215,20%,45%)]" />
           <span className="text-sm font-medium text-[hsl(215,20%,55%)]">Filters</span>
@@ -87,23 +87,23 @@ export default function Expenses() {
           <div className="relative col-span-2 md:col-span-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[hsl(215,20%,35%)]" />
             <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)}
-              className="w-full bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,20%)] rounded-lg pl-8 pr-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]" />
+              className="w-full bg-app-muted border border-app-border rounded-lg pl-8 pr-3 py-2 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]" />
           </div>
           <input type="date" value={filterStart} onChange={e => setFilterStart(e.target.value)} className={inputCls} placeholder="From" />
           <input type="date" value={filterEnd} onChange={e => setFilterEnd(e.target.value)} className={inputCls} placeholder="To" />
           <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className={selectCls}>
             <option value="">All Categories</option>
-            {categories.map(c => <option key={c.id} value={c.id} className="bg-[hsl(222,47%,8%)]">{c.name}</option>)}
+            {categories.map(c => <option key={c.id} value={c.id} className="bg-app-card text-app-fg">{c.name}</option>)}
           </select>
           <select value={filterPaymentMode} onChange={e => setFilterPaymentMode(e.target.value)} className={selectCls}>
             <option value="">All Payments</option>
-            {paymentModes.map(p => <option key={p.id} value={p.id} className="bg-[hsl(222,47%,8%)]">{p.name}</option>)}
+            {paymentModes.map(p => <option key={p.id} value={p.id} className="bg-app-card text-app-fg">{p.name}</option>)}
           </select>
           <select value={filterType} onChange={e => setFilterType(e.target.value)} className={selectCls}>
             <option value="">All Types</option>
-            <option value="Need" className="bg-[hsl(222,47%,8%)]">Need</option>
-            <option value="Want" className="bg-[hsl(222,47%,8%)]">Want</option>
-            <option value="Saving" className="bg-[hsl(222,47%,8%)]">Saving</option>
+            <option value="Need" className="bg-app-card text-app-fg">Need</option>
+            <option value="Want" className="bg-app-card text-app-fg">Want</option>
+            <option value="Saving" className="bg-app-card text-app-fg">Saving</option>
           </select>
         </div>
         {(search || filterCategory || filterPaymentMode || filterType || filterStart || filterEnd) && (
@@ -115,11 +115,11 @@ export default function Expenses() {
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] overflow-hidden animate-fade-in">
+      <div className="rounded-2xl border border-app-border bg-app-card overflow-hidden animate-fade-in">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[hsl(217,33%,14%)]">
+              <tr className="border-b border-app-border">
                 {['Date', 'Description', 'Category', 'Amount', 'Payment', 'Type', 'Actions'].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[hsl(215,20%,40%)] uppercase tracking-wider">{h}</th>
                 ))}
@@ -138,10 +138,10 @@ export default function Expenses() {
                   const pm = pmMap.get(exp.paymentModeId);
                   const budgetType = cat?.budgetType ?? 'Want';
                   return (
-                    <tr key={exp.id} className="border-b border-[hsl(217,33%,10%)] hover:bg-[hsl(217,33%,10%)] transition-colors">
+                    <tr key={exp.id} className="border-b border-app-border hover:bg-app-muted transition-colors">
                       <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,55%)] whitespace-nowrap">{formatDate(exp.date)}</td>
                       <td className="px-4 py-3.5">
-                        <p className="text-sm text-white font-medium">{exp.description}</p>
+                        <p className="text-sm text-app-fg font-medium">{exp.description}</p>
                         {exp.notes && <p className="text-xs text-[hsl(215,20%,35%)] mt-0.5">{exp.notes}</p>}
                       </td>
                       <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,55%)] whitespace-nowrap">{cat?.name ?? '—'}</td>
@@ -157,14 +157,14 @@ export default function Expenses() {
                       <td className="px-4 py-3.5">
                         <div className="flex items-center gap-1">
                           <button onClick={() => handleEdit(exp)}
-                            className="w-7 h-7 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-violet-500/20 hover:text-violet-400 text-[hsl(215,20%,45%)] transition-all">
+                            className="w-7 h-7 rounded-lg bg-app-muted border border-app-border flex items-center justify-center hover:bg-violet-500/20 hover:text-violet-400 text-app-fg transition-all">
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           <button onClick={() => handleDelete(exp.id)}
-                            className={cn('w-7 h-7 rounded-lg flex items-center justify-center transition-all text-[hsl(215,20%,45%)]',
+                            className={cn('w-7 h-7 rounded-lg flex items-center justify-center transition-all text-app-fg',
                               confirmDelete === exp.id
-                                ? 'bg-red-500/20 text-red-400 animate-pulse'
-                                : 'bg-[hsl(217,33%,14%)] hover:bg-red-500/20 hover:text-red-400')}>
+                                ? 'bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse'
+                                : 'bg-app-muted border border-app-border hover:bg-red-500/20 hover:text-red-400')}>
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>

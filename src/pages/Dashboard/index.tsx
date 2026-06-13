@@ -53,7 +53,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-white">{monthLabel}</h1>
+          <h1 className="text-2xl font-bold text-app-fg">{monthLabel}</h1>
           <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">Personal Finance Dashboard</p>
         </div>
         <div className="text-right">
@@ -72,19 +72,19 @@ export default function Dashboard() {
           <p className="text-2xl font-bold text-violet-300">{formatCurrency(totalSpent)}</p>
           <p className="text-xs text-[hsl(215,20%,45%)] mt-1">{Math.round((totalSpent / salary) * 100)}% of salary</p>
         </div>
-        <div className="rounded-2xl p-4 border border-[hsl(217,33%,20%)] bg-[hsl(222,47%,8%)]">
+        <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Remaining</p>
           <p className="text-xl font-bold text-emerald-400">{formatCurrency(Math.max(0, salary - totalSpent))}</p>
         </div>
-        <div className="rounded-2xl p-4 border border-[hsl(217,33%,20%)] bg-[hsl(222,47%,8%)]">
+        <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Transactions</p>
-          <p className="text-xl font-bold text-white">
+          <p className="text-xl font-bold text-app-fg">
             {expenses.filter(e => e.date.startsWith(currentMonth)).length}
           </p>
         </div>
-        <div className="rounded-2xl p-4 border border-[hsl(217,33%,20%)] bg-[hsl(222,47%,8%)]">
+        <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Avg/day</p>
-          <p className="text-xl font-bold text-white">
+          <p className="text-xl font-bold text-app-fg">
             {formatCurrency(Math.round(totalSpent / new Date().getDate()))}
           </p>
         </div>
@@ -104,8 +104,8 @@ export default function Dashboard() {
         <div className="lg:col-span-3">
           <QuickAddExpense />
         </div>
-        <div className="lg:col-span-2 rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
-          <h2 className="font-semibold text-white text-base mb-4">Spending Breakdown</h2>
+        <div className="lg:col-span-2 rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
+          <h2 className="font-semibold text-app-fg text-base mb-4">Spending Breakdown</h2>
           {pieData.length === 0 ? (
             <div className="flex items-center justify-center h-40 text-[hsl(215,20%,35%)] text-sm">
               No expenses this month
@@ -127,14 +127,14 @@ export default function Dashboard() {
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number) => formatCurrency(value)}
-                  contentStyle={{ backgroundColor: 'hsl(222,47%,8%)', border: '1px solid hsl(217,33%,20%)', borderRadius: '8px' }}
-                  labelStyle={{ color: 'hsl(213,31%,91%)' }}
+                  formatter={(value: any) => formatCurrency(Number(value || 0))}
+                  contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }}
+                  labelStyle={{ color: 'hsl(var(--foreground))' }}
                 />
                 <Legend
                   iconType="circle"
                   iconSize={8}
-                  formatter={(value) => <span style={{ color: 'hsl(215,20%,65%)', fontSize: '12px' }}>{value}</span>}
+                  formatter={(value) => <span className="text-app-muted text-xs">{value}</span>}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -143,17 +143,17 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Expenses */}
-      <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] animate-fade-in">
-        <div className="flex items-center justify-between p-5 border-b border-[hsl(217,33%,14%)]">
+      <div className="rounded-2xl border border-app-border bg-app-card animate-fade-in">
+        <div className="flex items-center justify-between p-5 border-b border-app-border">
           <div className="flex items-center gap-2">
             <TrendingDown className="w-4 h-4 text-[hsl(215,20%,45%)]" />
-            <h2 className="font-semibold text-white text-base">Recent Expenses</h2>
+            <h2 className="font-semibold text-app-fg text-base">Recent Expenses</h2>
           </div>
           <a href="/expenses" className="text-xs text-violet-400 hover:text-violet-300 flex items-center gap-1 transition-colors">
             View all <ArrowUpRight className="w-3 h-3" />
           </a>
         </div>
-        <div className="divide-y divide-[hsl(217,33%,12%)]">
+        <div className="divide-y divide-app-border">
           {recentExpenses.length === 0 ? (
             <div className="p-8 text-center text-[hsl(215,20%,35%)] text-sm">
               No expenses yet. Add your first one above!
@@ -163,13 +163,13 @@ export default function Dashboard() {
               const cat = catMap.get(exp.categoryId);
               const pm = pmMap.get(exp.paymentModeId);
               return (
-                <div key={exp.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-[hsl(217,33%,11%)] transition-colors">
+                <div key={exp.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-app-muted transition-colors">
                   <div className="flex items-center gap-3">
                     <div className={cn('w-9 h-9 rounded-xl flex items-center justify-center text-sm border', typeBgs[cat?.budgetType ?? 'Want'])}>
                       {cat?.budgetType === 'Need' ? '🏠' : cat?.budgetType === 'Saving' ? '💰' : '✨'}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{exp.description}</p>
+                      <p className="text-sm font-medium text-app-fg">{exp.description}</p>
                       <p className="text-xs text-[hsl(215,20%,40%)] mt-0.5">
                         {cat?.name} · {pm?.name} · {formatDate(exp.date)}
                       </p>
