@@ -1,6 +1,6 @@
 import type { Expense, Category, DailySpend, CategoryBreakdown, MonthlyBudgetScore } from '@/types';
 import { calcWeeklySummaries } from './weekly';
-import { BudgetRule } from '@/types';
+import type { BudgetRule } from '@/types';
 
 export function calcDailySpend(expenses: Expense[], month: string): DailySpend[] {
   const [year, m] = month.split('-').map(Number);
