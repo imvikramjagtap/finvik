@@ -47,6 +47,7 @@ export default function Settings() {
     categories, addCategory, updateCategory, deleteCategory,
     paymentModes, addPaymentMode, updatePaymentMode, deletePaymentMode,
     importData,
+    privateMode,
   } = useAppStore();
 
   // Settings form
@@ -158,8 +159,17 @@ export default function Settings() {
         <form onSubmit={handleSubmit(onSaveSettings)} className="space-y-4">
           <div>
             <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Monthly Salary (₹)</label>
-            <input type="number" {...register('monthlySalary', { valueAsNumber: true })} className={inputCls} />
-            {errors.monthlySalary && <p className="text-red-400 text-xs mt-1">{errors.monthlySalary.message}</p>}
+            {privateMode ? (
+              <div className="flex items-center justify-between w-full bg-app-muted border border-app-border rounded-lg px-3 py-2.5 text-sm text-[hsl(215,20%,45%)]">
+                <span>••••••</span>
+                <span className="text-[10px] text-violet-400 font-semibold uppercase tracking-wider">Private Mode Active</span>
+              </div>
+            ) : (
+              <>
+                <input type="number" {...register('monthlySalary', { valueAsNumber: true })} className={inputCls} />
+                {errors.monthlySalary && <p className="text-red-400 text-xs mt-1">{errors.monthlySalary.message}</p>}
+              </>
+            )}
           </div>
           <div className="grid grid-cols-3 gap-3">
             {([['needPercent', 'Needs %', '#38bdf8'], ['wantPercent', 'Wants %', '#fbbf24'], ['savingPercent', 'Savings %', '#4ade80']] as const).map(([field, label, color]) => (

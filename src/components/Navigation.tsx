@@ -11,6 +11,8 @@ import {
   TrendingUp,
   Sun,
   Moon,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
@@ -25,7 +27,7 @@ const navItems = [
 ];
 
 export function Sidebar() {
-  const { theme, toggleTheme } = useAppStore();
+  const { theme, toggleTheme, privateMode, togglePrivateMode } = useAppStore();
 
   return (
     <aside className="hidden md:flex flex-col w-64 min-h-screen bg-app-card border-r border-app-border fixed left-0 top-0 z-50">
@@ -64,18 +66,31 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Theme Toggle */}
-      <div className="px-4 py-3 border-t border-app-border">
+      {/* Toggles */}
+      <div className="px-4 py-3 border-t border-app-border space-y-2">
         <button
           onClick={toggleTheme}
-          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted border border-transparent hover:border-app-border/10 transition-colors"
+          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors"
         >
           <span className="flex items-center gap-3">
             {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
             <span>{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
           </span>
           <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-app-muted border border-app-border text-[hsl(215,20%,45%)]">
-            Toggle
+            Theme
+          </span>
+        </button>
+
+        <button
+          onClick={togglePrivateMode}
+          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors"
+        >
+          <span className="flex items-center gap-3">
+            {privateMode ? <EyeOff className="w-4 h-4 text-rose-500" /> : <Eye className="w-4 h-4 text-emerald-500" />}
+            <span>{privateMode ? 'Private Mode' : 'Public Mode'}</span>
+          </span>
+          <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-app-muted border border-app-border text-[hsl(215,20%,45%)]">
+            {privateMode ? 'Hidden' : 'Visible'}
           </span>
         </button>
       </div>
@@ -89,7 +104,7 @@ export function Sidebar() {
 }
 
 export function MobileNav() {
-  const { theme, toggleTheme } = useAppStore();
+  const { theme, toggleTheme, privateMode, togglePrivateMode } = useAppStore();
 
   return (
     <>
@@ -101,13 +116,22 @@ export function MobileNav() {
           </div>
           <span className="font-bold text-app-fg text-sm">My FinTech</span>
         </div>
-        <button
-          onClick={toggleTheme}
-          className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors"
-          aria-label="Toggle theme"
-        >
-          {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={togglePrivateMode}
+            className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors"
+            aria-label="Toggle private mode"
+          >
+            {privateMode ? <EyeOff className="w-4 h-4 text-rose-500" /> : <Eye className="w-4 h-4 text-emerald-500" />}
+          </button>
+          <button
+            onClick={toggleTheme}
+            className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Bottom Bar */}

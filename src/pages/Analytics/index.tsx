@@ -23,7 +23,7 @@ const tooltipStyle = {
 };
 
 export default function Analytics() {
-  const { expenses, categories, settings } = useAppStore();
+  const { expenses, categories, settings, privateMode } = useAppStore();
   const currentMonth = getCurrentMonth();
   const last12 = getLast12Months();
 
@@ -67,21 +67,21 @@ export default function Analytics() {
           }[b.type])} style={{ animationDelay: `${i * 0.05}s` }}>
             <div className="flex justify-between items-start mb-3">
               <span className="text-sm font-medium" style={{ color: typeColors[b.type] }}>{b.type}</span>
-              <span className="text-xs text-[hsl(215,20%,45%)]">{Math.round(b.percent)}%</span>
+              <span className="text-xs text-[hsl(215,20%,45%)]">{privateMode ? '•••%' : `${Math.round(b.percent)}%`}</span>
             </div>
             <div className="space-y-1">
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
-                <span>Budget</span><span className="text-app-fg font-medium">{formatCurrency(b.budget)}</span>
+                <span>Budget</span><span className="text-app-fg font-medium">{privateMode ? '••••' : formatCurrency(b.budget)}</span>
               </div>
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
                 <span>Spent</span><span className="font-medium" style={{ color: typeColors[b.type] }}>{formatCurrency(b.spent)}</span>
               </div>
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
-                <span>Remaining</span><span className="text-app-fg font-medium">{formatCurrency(b.remaining)}</span>
+                <span>Remaining</span><span className="text-app-fg font-medium">{privateMode ? '••••' : formatCurrency(b.remaining)}</span>
               </div>
             </div>
             <div className="mt-3 w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
-              <div className="h-1.5 rounded-full transition-all duration-700" style={{ width: `${Math.min(b.percent, 100)}%`, backgroundColor: typeColors[b.type] }} />
+              <div className="h-1.5 rounded-full transition-all duration-700" style={{ width: privateMode ? '0%' : `${Math.min(b.percent, 100)}%`, backgroundColor: typeColors[b.type] }} />
             </div>
           </div>
         ))}

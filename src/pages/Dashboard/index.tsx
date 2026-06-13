@@ -16,7 +16,7 @@ const PIE_COLORS = {
 };
 
 export default function Dashboard() {
-  const { expenses, categories, paymentModes, settings, deleteExpense } = useAppStore();
+  const { expenses, categories, paymentModes, settings, deleteExpense, privateMode } = useAppStore();
   const currentMonth = getCurrentMonth();
   const monthLabel = getMonthLabel(currentMonth);
   const salary = settings.salary.monthlySalary;
@@ -100,7 +100,7 @@ export default function Dashboard() {
             <Wallet className="w-4 h-4 text-violet-400" />
             <span className="text-sm text-[hsl(215,20%,45%)]">Monthly Salary</span>
           </div>
-          <p className="text-xl font-bold gradient-text">{formatCurrency(salary)}</p>
+          <p className="text-xl font-bold gradient-text">{privateMode ? '••••' : formatCurrency(salary)}</p>
         </div>
       </div>
 
@@ -152,11 +152,15 @@ export default function Dashboard() {
         <div className="col-span-2 md:col-span-1 rounded-2xl p-4 border border-violet-500/20 bg-violet-500/10">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Total Spent</p>
           <p className="text-2xl font-bold text-violet-600 dark:text-violet-300">{formatCurrency(totalSpent)}</p>
-          <p className="text-xs text-[hsl(215,20%,45%)] mt-1">{Math.round((totalSpent / salary) * 100)}% of salary</p>
+          <p className="text-xs text-[hsl(215,20%,45%)] mt-1">
+            {Math.round((totalSpent / salary) * 100)}% of salary
+          </p>
         </div>
         <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Remaining</p>
-          <p className="text-xl font-bold text-emerald-500 dark:text-emerald-400">{formatCurrency(Math.max(0, salary - totalSpent))}</p>
+          <p className="text-xl font-bold text-emerald-500 dark:text-emerald-400">
+            {privateMode ? '••••' : formatCurrency(Math.max(0, salary - totalSpent))}
+          </p>
         </div>
         <div className="rounded-2xl p-4 border border-app-border bg-app-card">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Transactions</p>

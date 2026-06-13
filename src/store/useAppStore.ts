@@ -28,6 +28,9 @@ interface AppStore {
   theme: 'light' | 'dark';
   toggleTheme: () => void;
 
+  privateMode: boolean;
+  togglePrivateMode: () => void;
+
   saveSettings: (settings: AppSettings) => void;
 
   importData: (json: string) => void;
@@ -39,6 +42,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
   paymentModes: [],
   settings: storageService.getSettings(),
   theme: (localStorage.getItem('myfintech_theme') as 'light' | 'dark') || 'dark',
+  privateMode: localStorage.getItem('myfintech_private_mode') === 'true',
 
   loadAll: () => {
     const currentTheme = (localStorage.getItem('myfintech_theme') as 'light' | 'dark') || 'dark';
@@ -49,6 +53,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     }
     set({
       theme: currentTheme,
+      privateMode: localStorage.getItem('myfintech_private_mode') === 'true',
       expenses: storageService.getExpenses(),
       categories: storageService.getCategories(),
       paymentModes: storageService.getPaymentModes(),
@@ -65,6 +70,12 @@ export const useAppStore = create<AppStore>((set, get) => ({
     } else {
       document.documentElement.classList.remove('light');
     }
+  },
+
+  togglePrivateMode: () => {
+    const next = !get().privateMode;
+    localStorage.setItem('myfintech_private_mode', String(next));
+    set({ privateMode: next });
   },
 
   addExpense: (expenseData) => {

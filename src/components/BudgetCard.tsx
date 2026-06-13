@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { useAppStore } from '@/store/useAppStore';
 
 interface BudgetCardProps {
   type: 'Need' | 'Want' | 'Saving';
@@ -42,6 +43,7 @@ function formatINR(n: number) {
 }
 
 export function BudgetCard({ type, budget, spent, remaining, percent }: BudgetCardProps) {
+  const { privateMode } = useAppStore();
   const config = typeConfig[type];
   const isOverspent = spent > budget;
 
@@ -58,7 +60,7 @@ export function BudgetCard({ type, budget, spent, remaining, percent }: BudgetCa
       </div>
 
       <div className="mb-4">
-        <p className="text-2xl font-bold text-app-fg">{formatINR(budget)}</p>
+        <p className="text-2xl font-bold text-app-fg">{privateMode ? '••••' : formatINR(budget)}</p>
         <p className="text-xs text-[hsl(215,20%,45%)] mt-0.5">monthly budget</p>
       </div>
 
@@ -77,7 +79,9 @@ export function BudgetCard({ type, budget, spent, remaining, percent }: BudgetCa
         </div>
         <div className="text-right">
           <p className="text-[hsl(215,20%,45%)]">Remaining</p>
-          <p className={cn('font-semibold mt-0.5', isOverspent ? 'text-red-400' : config.textColor)}>{formatINR(remaining)}</p>
+          <p className={cn('font-semibold mt-0.5', isOverspent ? 'text-red-400' : config.textColor)}>
+            {privateMode ? '••••' : formatINR(remaining)}
+          </p>
         </div>
       </div>
     </div>

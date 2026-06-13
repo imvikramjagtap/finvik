@@ -27,7 +27,7 @@ const typeBadge = {
 };
 
 export default function Monthly() {
-  const { expenses, categories, settings } = useAppStore();
+  const { expenses, categories, settings, privateMode } = useAppStore();
   const [month, setMonth] = useState(getCurrentMonth());
 
   const dailySpend = useMemo(() => calcDailySpend(expenses, month), [expenses, month]);
@@ -77,8 +77,8 @@ export default function Monthly() {
             <p className="text-xs text-[hsl(215,20%,45%)] mt-0.5">Based on spending habits</p>
           </div>
           <div className="text-right">
-            <div className={cn('text-4xl font-bold', scoreColor)}>{budgetScore.total}</div>
-            <div className={cn('text-sm font-medium', scoreColor)}>{scoreLabel}</div>
+            <div className={cn('text-4xl font-bold', scoreColor)}>{privateMode ? '•••' : budgetScore.total}</div>
+            <div className={cn('text-sm font-medium', scoreColor)}>{privateMode ? 'Private' : scoreLabel}</div>
             <div className="text-xs text-[hsl(215,20%,35%)]">/100</div>
           </div>
         </div>
@@ -91,10 +91,10 @@ export default function Monthly() {
             <div key={s.label}>
               <div className="flex justify-between text-xs mb-1">
                 <span className="text-[hsl(215,20%,45%)]">{s.label}</span>
-                <span className="text-app-fg font-medium">{s.score}/{s.max}</span>
+                <span className="text-app-fg font-medium">{privateMode ? '••' : s.score}/{s.max}</span>
               </div>
               <div className="w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
-                <div className="h-1.5 rounded-full bg-violet-600 dark:bg-violet-400 transition-all duration-700" style={{ width: `${(s.score / s.max) * 100}%` }} />
+                <div className="h-1.5 rounded-full bg-violet-600 dark:bg-violet-400 transition-all duration-700" style={{ width: privateMode ? '0%' : `${(s.score / s.max) * 100}%` }} />
               </div>
             </div>
           ))}
