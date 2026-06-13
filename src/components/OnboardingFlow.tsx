@@ -191,7 +191,7 @@ export default function OnboardingFlow() {
               </div>
               <div className="space-y-2">
                 <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-                  Welcome to <span className="gradient-text">My FinTech</span>
+                  Welcome to <span className="gradient-text">FinVik</span>
                 </h1>
                 <p className="text-sm text-[hsl(215,20%,50%)] max-w-md mx-auto">
                   A clean, lightweight expense manager focused on the 50/30/20 budget framework. No spreadsheets, no complex setup.
@@ -502,7 +502,7 @@ export default function OnboardingFlow() {
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold text-white">Setup completed!</h2>
                 <p className="text-xs text-[hsl(215,20%,45%)]">
-                  Your My FinTech account is configured and ready to roll.
+                  Your FinVik account is configured and ready to roll.
                 </p>
               </div>
 

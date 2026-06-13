@@ -1,4 +1,4 @@
-// Core data types for My FinTech app
+// Core data types for FinVik app
 
 export interface Expense {
   id: string;

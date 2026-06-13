@@ -31,7 +31,7 @@ export function startWelcomeTour() {
     {
       element: '#driver-add-expense',
       popover: {
-        title: '👋 Welcome to My FinTech!',
+        title: '👋 Welcome to FinVik!',
         description:
           'This is your quick add panel. Log a spend in seconds — just answer a few questions one at a time.',
         side: 'right',
