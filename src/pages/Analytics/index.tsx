@@ -67,7 +67,7 @@ export default function Analytics() {
           }[b.type])} style={{ animationDelay: `${i * 0.05}s` }}>
             <div className="flex justify-between items-start mb-3">
               <span className="text-sm font-medium" style={{ color: typeColors[b.type] }}>{b.type}</span>
-              <span className="text-xs text-[hsl(215,20%,45%)]">{privateMode ? '•••%' : `${Math.round(b.percent)}%`}</span>
+              <span className="text-xs text-[hsl(215,20%,45%)]">{Math.round(b.percent)}%</span>
             </div>
             <div className="space-y-1">
               <div className="flex justify-between text-xs text-[hsl(215,20%,45%)]">
@@ -81,7 +81,7 @@ export default function Analytics() {
               </div>
             </div>
             <div className="mt-3 w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
-              <div className="h-1.5 rounded-full transition-all duration-700" style={{ width: privateMode ? '0%' : `${Math.min(b.percent, 100)}%`, backgroundColor: typeColors[b.type] }} />
+              <div className="h-1.5 rounded-full transition-all duration-700" style={{ width: `${Math.min(b.percent, 100)}%`, backgroundColor: typeColors[b.type] }} />
             </div>
           </div>
         ))}
