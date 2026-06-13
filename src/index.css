@@ -158,3 +158,85 @@ body {
   border-radius: 8px !important;
   color: hsl(var(--foreground)) !important;
 }
+
+/* Driver.js Custom Theme (High Contrast) */
+.fintech-popover {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: none !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  box-shadow: 0 20px 50px -12px rgba(139, 92, 246, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.fintech-popover .driver-popover-title {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 12px !important;
+  color: #111827 !important;
+}
+
+.fintech-popover .driver-popover-description {
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  color: #4b5563 !important;
+}
+
+.fintech-popover .driver-popover-footer {
+  margin-top: 24px !important;
+}
+
+.fintech-popover .driver-popover-progress-text {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  color: #9ca3af !important;
+}
+
+.fintech-popover button.driver-popover-next-btn,
+.fintech-popover button.driver-popover-done-btn {
+  background: #8b5cf6 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.fintech-popover button.driver-popover-next-btn:hover,
+.fintech-popover button.driver-popover-done-btn:hover {
+  transform: translateY(-2px) !important;
+  background: #7c3aed !important;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.6) !important;
+}
+
+.fintech-popover button.driver-popover-prev-btn {
+  background-color: #f3f4f6 !important;
+  color: #4b5563 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.fintech-popover button.driver-popover-prev-btn:hover {
+  background-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+.fintech-popover .driver-popover-close-btn {
+  color: #9ca3af !important;
+  transition: color 0.2s ease !important;
+  top: 16px !important;
+  right: 16px !important;
+}
+
+.fintech-popover .driver-popover-close-btn:hover {
+  color: #4b5563 !important;
+}
