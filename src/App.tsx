@@ -9,6 +9,7 @@ import Weekly from '@/pages/Weekly';
 import Monthly from '@/pages/Monthly';
 import Calendar from '@/pages/Calendar';
 import Settings from '@/pages/Settings';
+import Help from '@/pages/Help';
 
 export default function App() {
   const loadAll = useAppStore(s => s.loadAll);
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/weekly" element={<Weekly />} />
             <Route path="/monthly" element={<Monthly />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/help" element={<Help />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>

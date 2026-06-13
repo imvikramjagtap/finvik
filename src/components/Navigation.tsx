@@ -13,6 +13,7 @@ import {
   Moon,
   Eye,
   EyeOff,
+  HelpCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
@@ -23,6 +24,7 @@ const navItems = [
   { path: '/weekly', label: 'Weekly', icon: CalendarDays },
   { path: '/monthly', label: 'Monthly', icon: CalendarRange },
   { path: '/calendar', label: 'Calendar', icon: Calendar },
+  { path: '/help', label: 'Help & Guides', icon: HelpCircle },
   { path: '/settings', label: 'Settings', icon: Settings },
 ];
 
