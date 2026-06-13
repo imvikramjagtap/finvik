@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Sidebar, MobileNav } from '@/components/Navigation';
 import { useAppStore } from '@/store/useAppStore';
+import OnboardingFlow from '@/components/OnboardingFlow';
 import Dashboard from '@/pages/Dashboard';
 import Analytics from '@/pages/Analytics';
 import Weekly from '@/pages/Weekly';
@@ -11,10 +12,15 @@ import Settings from '@/pages/Settings';
 
 export default function App() {
   const loadAll = useAppStore(s => s.loadAll);
+  const onboarded = useAppStore(s => s.onboarded);
 
   useEffect(() => {
     loadAll();
   }, [loadAll]);
+
+  if (!onboarded) {
+    return <OnboardingFlow />;
+  }
 
   return (
     <BrowserRouter>

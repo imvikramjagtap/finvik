@@ -7,7 +7,7 @@ const KEYS = {
   SETTINGS: 'myfintech_settings',
 };
 
-const DEFAULT_CATEGORIES: Category[] = [
+export const DEFAULT_CATEGORIES: Category[] = [
   { id: 'cat_1', name: 'Housing & Utilities', budgetType: 'Need' },
   { id: 'cat_2', name: 'Groceries', budgetType: 'Need' },
   { id: 'cat_3', name: 'Transport', budgetType: 'Need' },
@@ -23,7 +23,7 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'cat_13', name: 'Retirement', budgetType: 'Saving' },
 ];
 
-const DEFAULT_PAYMENT_MODES: PaymentMode[] = [
+export const DEFAULT_PAYMENT_MODES: PaymentMode[] = [
   { id: 'pm_1', name: 'UPI' },
   { id: 'pm_2', name: 'Cash' },
   { id: 'pm_3', name: 'Credit Card' },
@@ -31,7 +31,7 @@ const DEFAULT_PAYMENT_MODES: PaymentMode[] = [
   { id: 'pm_5', name: 'Bank Transfer' },
 ];
 
-const DEFAULT_SETTINGS: AppSettings = {
+export const DEFAULT_SETTINGS: AppSettings = {
   salary: { monthlySalary: 100000 },
   budgetRule: { needPercent: 50, wantPercent: 30, savingPercent: 20 },
   weeklyLimit: { amount: 10000 },

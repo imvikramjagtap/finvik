@@ -31,6 +31,9 @@ interface AppStore {
   privateMode: boolean;
   togglePrivateMode: () => void;
 
+  onboarded: boolean;
+  completeOnboarding: () => void;
+
   saveSettings: (settings: AppSettings) => void;
 
   importData: (json: string) => void;
@@ -43,6 +46,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
   settings: storageService.getSettings(),
   theme: (localStorage.getItem('myfintech_theme') as 'light' | 'dark') || 'dark',
   privateMode: localStorage.getItem('myfintech_private_mode') === 'true',
+  onboarded: localStorage.getItem('myfintech_onboarded') === 'true',
 
   loadAll: () => {
     const currentTheme = (localStorage.getItem('myfintech_theme') as 'light' | 'dark') || 'dark';
@@ -54,6 +58,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set({
       theme: currentTheme,
       privateMode: localStorage.getItem('myfintech_private_mode') === 'true',
+      onboarded: localStorage.getItem('myfintech_onboarded') === 'true',
       expenses: storageService.getExpenses(),
       categories: storageService.getCategories(),
       paymentModes: storageService.getPaymentModes(),
@@ -76,6 +81,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const next = !get().privateMode;
     localStorage.setItem('myfintech_private_mode', String(next));
     set({ privateMode: next });
+  },
+
+  completeOnboarding: () => {
+    localStorage.setItem('myfintech_onboarded', 'true');
+    set({ onboarded: true });
   },
 
   addExpense: (expenseData) => {
