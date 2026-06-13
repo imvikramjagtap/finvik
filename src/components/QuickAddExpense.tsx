@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Plus, ArrowLeft, ArrowRight, Loader2, Calendar, FileText, CheckCircle2 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { cn, formatCurrency } from '@/lib/utils';
@@ -8,7 +8,7 @@ type Step = 'AMOUNT' | 'DESCRIPTION' | 'CATEGORY' | 'PAYMENT_MODE' | 'DATE_NOTES
 const STEPS: Step[] = ['AMOUNT', 'DESCRIPTION', 'CATEGORY', 'PAYMENT_MODE', 'DATE_NOTES'];
 
 export function QuickAddExpense() {
-  const { addExpense, categories, paymentModes } = useAppStore();
+  const { addExpense, categories, paymentModes, expenses } = useAppStore();
 
   // Step states
   const [currentStep, setCurrentStep] = useState<Step>('AMOUNT');
@@ -26,6 +26,33 @@ export function QuickAddExpense() {
   const [isSaving, setIsSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Suggestions for Description
+  const recentDescriptions = useMemo(() => {
+    const unique = new Set<string>();
+    const list: string[] = [];
+    for (const exp of expenses) {
+      const desc = exp.description.trim();
+      if (!unique.has(desc)) {
+        unique.add(desc);
+        list.push(desc);
+      }
+      if (list.length >= 4) break;
+    }
+    return list;
+  }, [expenses]);
+
+  const defaultSuggestions = ['Coffee', 'Groceries', 'Food Delivery', 'Uber/Ride', 'Rent/Bills', 'Shopping', 'Dining Out', 'Medicines'];
+
+  const suggestions = useMemo(() => {
+    const list = [...recentDescriptions];
+    for (const item of defaultSuggestions) {
+      if (!list.map(s => s.toLowerCase()).includes(item.toLowerCase()) && list.length < 8) {
+        list.push(item);
+      }
+    }
+    return list;
+  }, [recentDescriptions]);
 
   // Refs for auto-focusing
   const amountInputRef = useRef<HTMLInputElement>(null);
@@ -209,17 +236,54 @@ export function QuickAddExpense() {
         )}
 
         {currentStep === 'DESCRIPTION' && (
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium text-[hsl(215,20%,45%)]">What was it for?</h3>
-            <input
-              ref={descInputRef}
-              type="text"
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="e.g. Groceries, Coffee, Electric bill"
-              className="w-full py-3 text-xl font-semibold bg-transparent text-app-fg border-b border-app-border focus:border-violet-500 focus:outline-none transition-all placeholder:text-[hsl(215,20%,30%)]"
-            />
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-sm font-medium text-[hsl(215,20%,45%)] mb-1">What was it for?</h3>
+              <input
+                ref={descInputRef}
+                type="text"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="e.g. Groceries, Coffee, Electric bill"
+                className="w-full py-3 text-xl font-semibold bg-transparent text-app-fg border-b border-app-border focus:border-violet-500 focus:outline-none transition-all placeholder:text-[hsl(215,20%,30%)]"
+              />
+            </div>
+            
+            {/* Suggestions Chips */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[hsl(215,20%,40%)]">Quick Suggestions</p>
+              <div className="flex flex-wrap gap-2">
+                {suggestions.map((item: string) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => {
+                      setDescription(item);
+                      // Look up previous transaction with exact match (case insensitive)
+                      const prevTx = expenses.find(e => e.description.trim().toLowerCase() === item.trim().toLowerCase());
+                      if (prevTx) {
+                        setSelectedCategoryId(prevTx.categoryId);
+                        setSelectedPaymentModeId(prevTx.paymentModeId);
+                        setTimeout(() => {
+                          setDirection('next');
+                          setCurrentStep('DATE_NOTES');
+                        }, 150);
+                      } else {
+                        setTimeout(() => {
+                          setDirection('next');
+                          setCurrentStep('CATEGORY');
+                        }, 150);
+                      }
+                    }}
+                    className="px-3 py-1.5 rounded-xl text-xs font-medium bg-app-muted border border-app-border text-app-fg hover:border-violet-500/50 hover:bg-app-muted/80 transition-all cursor-pointer"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {amount && <p className="text-xs text-violet-400 font-medium">Spending: {formatCurrency(Number(amount))}</p>}
           </div>
         )}
