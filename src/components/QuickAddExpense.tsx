@@ -1,159 +1,411 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Plus, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, ArrowLeft, ArrowRight, Loader2, Calendar, FileText, CheckCircle2 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 
-const schema = z.object({
-  date: z.string().min(1, 'Date is required'),
-  amount: z.string().min(1, 'Amount is required').refine(v => !isNaN(Number(v)) && Number(v) > 0, 'Must be a positive number'),
-  description: z.string().min(1, 'Description is required').max(100),
-  categoryId: z.string().min(1, 'Category is required'),
-  paymentModeId: z.string().min(1, 'Payment mode is required'),
-  notes: z.string().optional(),
-});
+type Step = 'AMOUNT' | 'DESCRIPTION' | 'CATEGORY' | 'PAYMENT_MODE' | 'DATE_NOTES';
 
-type FormData = z.infer<typeof schema>;
+const STEPS: Step[] = ['AMOUNT', 'DESCRIPTION', 'CATEGORY', 'PAYMENT_MODE', 'DATE_NOTES'];
 
 export function QuickAddExpense() {
   const { addExpense, categories, paymentModes } = useAppStore();
+
+  // Step states
+  const [currentStep, setCurrentStep] = useState<Step>('AMOUNT');
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
+
+  // Value states
+  const [amount, setAmount] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+  const [selectedPaymentModeId, setSelectedPaymentModeId] = useState<string>('');
+  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [notes, setNotes] = useState<string>('');
+
+  // UI States
+  const [isSaving, setIsSaving] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const today = new Date().toISOString().split('T')[0];
+  // Refs for auto-focusing
+  const amountInputRef = useRef<HTMLInputElement>(null);
+  const descInputRef = useRef<HTMLInputElement>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { date: today },
-  });
+  // Auto-focus logic based on step
+  useEffect(() => {
+    if (currentStep === 'AMOUNT') {
+      amountInputRef.current?.focus();
+    } else if (currentStep === 'DESCRIPTION') {
+      descInputRef.current?.focus();
+    }
+  }, [currentStep]);
 
-  const onSubmit = async (data: FormData) => {
-    addExpense({
-      date: data.date,
-      amount: Number(data.amount),
-      description: data.description,
-      categoryId: data.categoryId,
-      paymentModeId: data.paymentModeId,
-      notes: data.notes,
-    });
-    reset({ date: today });
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 2000);
+  const stepIndex = STEPS.indexOf(currentStep);
+  const progressPercent = ((stepIndex + 1) / STEPS.length) * 100;
+
+  // Validation
+  const validateStep = (step: Step): boolean => {
+    setErrorMsg(null);
+    if (step === 'AMOUNT') {
+      const num = Number(amount);
+      if (!amount || isNaN(num) || num <= 0) {
+        setErrorMsg('Please enter a valid amount greater than 0');
+        return false;
+      }
+    }
+    if (step === 'DESCRIPTION') {
+      if (!description.trim()) {
+        setErrorMsg('Please enter a description');
+        return false;
+      }
+    }
+    if (step === 'CATEGORY') {
+      if (!selectedCategoryId) {
+        setErrorMsg('Please select a category');
+        return false;
+      }
+    }
+    if (step === 'PAYMENT_MODE') {
+      if (!selectedPaymentModeId) {
+        setErrorMsg('Please select a payment mode');
+        return false;
+      }
+    }
+    return true;
   };
 
+  const handleNext = () => {
+    if (!validateStep(currentStep)) return;
+    const nextIdx = stepIndex + 1;
+    if (nextIdx < STEPS.length) {
+      setDirection('next');
+      setCurrentStep(STEPS[nextIdx]);
+    }
+  };
+
+  const handleBack = () => {
+    setErrorMsg(null);
+    const prevIdx = stepIndex - 1;
+    if (prevIdx >= 0) {
+      setDirection('prev');
+      setCurrentStep(STEPS[prevIdx]);
+    }
+  };
+
+  const handleReset = () => {
+    setCurrentStep('AMOUNT');
+    setAmount('');
+    setDescription('');
+    setSelectedCategoryId('');
+    setSelectedPaymentModeId('');
+    setDate(new Date().toISOString().split('T')[0]);
+    setNotes('');
+    setErrorMsg(null);
+  };
+
+  const handleSave = async () => {
+    if (!validateStep('AMOUNT') || !validateStep('DESCRIPTION') || !validateStep('CATEGORY') || !validateStep('PAYMENT_MODE')) {
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      addExpense({
+        date,
+        amount: Number(amount),
+        description: description.trim(),
+        categoryId: selectedCategoryId,
+        paymentModeId: selectedPaymentModeId,
+        notes: notes.trim() || undefined,
+      });
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        handleReset();
+      }, 2000);
+    } catch (err) {
+      setErrorMsg('Failed to save expense');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Keyboard navigation helpers
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (currentStep === 'DATE_NOTES') {
+        handleSave();
+      } else {
+        handleNext();
+      }
+    }
+  };
+
+  const selectedCategoryName = categories.find(c => c.id === selectedCategoryId)?.name;
+  const selectedPaymentName = paymentModes.find(p => p.id === selectedPaymentModeId)?.name;
+
   return (
-    <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
-          <Plus className="w-4 h-4 text-violet-400" />
+    <div className="rounded-2xl border border-app-border bg-app-card p-6 shadow-xl relative overflow-hidden transition-all duration-300">
+      {/* Top Header & Progress */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          {currentStep !== 'AMOUNT' ? (
+            <button
+              onClick={handleBack}
+              className="p-1.5 rounded-lg bg-app-muted border border-app-border text-app-fg hover:opacity-80 transition-colors"
+              title="Go back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          ) : (
+            <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
+              <Plus className="w-4 h-4 text-violet-400" />
+            </div>
+          )}
+          <span className="text-xs font-semibold text-app-fg uppercase tracking-wider">
+            Step {stepIndex + 1} of {STEPS.length}
+          </span>
         </div>
-        <h2 className="font-semibold text-app-fg text-base">Quick Add Expense</h2>
+        {currentStep !== 'AMOUNT' && (
+          <button
+            onClick={handleReset}
+            className="text-xs text-[hsl(215,20%,45%)] hover:text-red-400 transition-colors"
+          >
+            Reset
+          </button>
+        )}
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-        {/* Row 1: Date + Amount */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Date</label>
-            <input
-              type="date"
-              {...register('date')}
-              className={cn(
-                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
-                errors.date ? 'border-red-500/60' : 'border-app-border'
-              )}
-            />
-          </div>
-          <div>
-            <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Amount (₹)</label>
-            <input
-              type="number"
-              placeholder="0"
-              {...register('amount')}
-              className={cn(
-                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all placeholder:text-[hsl(215,20%,30%)]',
-                errors.amount ? 'border-red-500/60' : 'border-app-border'
-              )}
-            />
-          </div>
-        </div>
+      {/* Progress Bar */}
+      <div className="w-full bg-app-muted h-1 rounded-full overflow-hidden mb-6">
+        <div
+          className="h-full bg-gradient-to-r from-violet-600 to-cyan-500 transition-all duration-300"
+          style={{ width: `${progressPercent}%` }}
+        />
+      </div>
 
-        {/* Description */}
-        <div>
-          <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Description</label>
-          <input
-            type="text"
-            placeholder="What did you spend on?"
-            {...register('description')}
+      {/* Dynamic step view with key-based transition triggers */}
+      <div key={currentStep} className="animate-fade-in space-y-4">
+        {currentStep === 'AMOUNT' && (
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-[hsl(215,20%,45%)]">How much did you spend?</h3>
+            <div className="relative flex items-center">
+              <span className="absolute left-3 text-3xl font-extrabold text-app-fg opacity-60">₹</span>
+              <input
+                ref={amountInputRef}
+                type="number"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="0"
+                className="w-full pl-9 pr-4 py-4 text-4xl font-extrabold bg-transparent text-app-fg border-b border-app-border focus:border-violet-500 focus:outline-none transition-all placeholder:text-[hsl(215,20%,25%)]"
+              />
+            </div>
+            <p className="text-xs text-[hsl(215,20%,40%)]">Press Enter or click Next to continue</p>
+          </div>
+        )}
+
+        {currentStep === 'DESCRIPTION' && (
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-[hsl(215,20%,45%)]">What was it for?</h3>
+            <input
+              ref={descInputRef}
+              type="text"
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="e.g. Groceries, Coffee, Electric bill"
+              className="w-full py-3 text-xl font-semibold bg-transparent text-app-fg border-b border-app-border focus:border-violet-500 focus:outline-none transition-all placeholder:text-[hsl(215,20%,30%)]"
+            />
+            {amount && <p className="text-xs text-violet-400 font-medium">Spending: {formatCurrency(Number(amount))}</p>}
+          </div>
+        )}
+
+        {currentStep === 'CATEGORY' && (
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-[hsl(215,20%,45%)]">Which category does it fit?</h3>
+            
+            <div className="max-h-[200px] overflow-y-auto pr-1 space-y-3">
+              {(['Need', 'Want', 'Saving'] as const).map(type => {
+                const typeCats = categories.filter(c => c.budgetType === type);
+                if (typeCats.length === 0) return null;
+                return (
+                  <div key={type} className="space-y-1">
+                    <p className={cn(
+                      'text-[10px] font-bold uppercase tracking-wider',
+                      type === 'Need' ? 'text-sky-400' : type === 'Want' ? 'text-amber-400' : 'text-emerald-400'
+                    )}>
+                      {type}s
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {typeCats.map(cat => (
+                        <button
+                          key={cat.id}
+                          onClick={() => {
+                            setSelectedCategoryId(cat.id);
+                            // Smooth auto-advancing delay
+                            setTimeout(() => {
+                              setDirection('next');
+                              setCurrentStep('PAYMENT_MODE');
+                            }, 150);
+                          }}
+                          className={cn(
+                            "px-3 py-2 rounded-xl text-xs font-semibold transition-all border",
+                            selectedCategoryId === cat.id
+                              ? "bg-violet-600 border-violet-500 text-white shadow-md shadow-violet-500/20"
+                              : "bg-app-muted border-app-border text-app-fg hover:border-violet-500/50 hover:bg-app-muted/80"
+                          )}
+                        >
+                          {cat.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {currentStep === 'PAYMENT_MODE' && (
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-[hsl(215,20%,45%)]">How did you pay?</h3>
+            
+            <div className="flex flex-wrap gap-2 pt-1">
+              {paymentModes.map(pm => (
+                <button
+                  key={pm.id}
+                  onClick={() => {
+                    setSelectedPaymentModeId(pm.id);
+                    // Smooth auto-advancing delay
+                    setTimeout(() => {
+                      setDirection('next');
+                      setCurrentStep('DATE_NOTES');
+                    }, 150);
+                  }}
+                  className={cn(
+                    "px-4 py-2.5 rounded-xl text-xs font-semibold transition-all border",
+                    selectedPaymentModeId === pm.id
+                      ? "bg-violet-600 border-violet-500 text-white shadow-md shadow-violet-500/20"
+                      : "bg-app-muted border-app-border text-app-fg hover:border-violet-500/50 hover:bg-app-muted/80"
+                  )}
+                >
+                  {pm.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {currentStep === 'DATE_NOTES' && (
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-[hsl(215,20%,45%)]">Final Details</h3>
+
+            {/* Quick Date Chips */}
+            <div className="space-y-2">
+              <span className="text-xs text-[hsl(215,20%,45%)] flex items-center gap-1 font-medium">
+                <Calendar className="w-3.5 h-3.5" /> Date
+              </span>
+              <div className="flex gap-2">
+                {[
+                  { label: 'Today', value: new Date().toISOString().split('T')[0] },
+                  { label: 'Yesterday', value: new Date(Date.now() - 86400000).toISOString().split('T')[0] },
+                ].map(dOpt => (
+                  <button
+                    key={dOpt.label}
+                    type="button"
+                    onClick={() => setDate(dOpt.value)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border",
+                      date === dOpt.value
+                        ? "bg-violet-600 border-violet-500 text-white"
+                        : "bg-app-muted border-app-border text-app-fg"
+                    )}
+                  >
+                    {dOpt.label}
+                  </button>
+                ))}
+                
+                {/* Manual date field (Simple text/input, no heavy picker) */}
+                <input
+                  ref={dateInputRef}
+                  type="date"
+                  value={date}
+                  onChange={e => setDate(e.target.value)}
+                  className="bg-app-muted border border-app-border rounded-lg px-2 py-1.5 text-xs text-app-fg focus:outline-none focus:ring-1 focus:ring-violet-500"
+                />
+              </div>
+            </div>
+
+            {/* Optional Notes */}
+            <div className="space-y-1.5">
+              <span className="text-xs text-[hsl(215,20%,45%)] flex items-center gap-1 font-medium">
+                <FileText className="w-3.5 h-3.5" /> Notes (optional)
+              </span>
+              <input
+                type="text"
+                value={notes}
+                onChange={e => setNotes(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Add details..."
+                className="w-full bg-app-muted border border-app-border rounded-lg px-3 py-2 text-xs text-app-fg focus:outline-none focus:ring-1 focus:ring-violet-500"
+              />
+            </div>
+
+            {/* Preview Summary */}
+            <div className="p-3 bg-app-muted/40 rounded-xl border border-app-border text-xs space-y-1">
+              <p className="text-[hsl(215,20%,45%)]">Summary Preview:</p>
+              <p className="text-app-fg font-semibold">
+                {formatCurrency(Number(amount))} spent on "{description}"
+              </p>
+              <p className="text-[hsl(215,20%,50%)]">
+                Category: <span className="text-app-fg font-medium">{selectedCategoryName}</span> · Mode: <span className="text-app-fg font-medium">{selectedPaymentName}</span>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Error Message */}
+      {errorMsg && (
+        <p className="text-red-400 text-xs mt-3 animate-pulse">{errorMsg}</p>
+      )}
+
+      {/* Bottom Navigation Buttons */}
+      <div className="flex gap-3 mt-6 pt-2 border-t border-app-border/40">
+        {currentStep !== 'DATE_NOTES' ? (
+          <button
+            onClick={handleNext}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white font-semibold text-sm transition-all hover:shadow-lg hover:shadow-violet-500/25"
+          >
+            Continue <ArrowRight className="w-4 h-4" />
+          </button>
+        ) : (
+          <button
+            onClick={handleSave}
+            disabled={isSaving || success}
             className={cn(
-              'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all placeholder:text-[hsl(215,20%,30%)]',
-              errors.description ? 'border-red-500/60' : 'border-app-border'
+              "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all duration-200",
+              success
+                ? "bg-emerald-500 text-white"
+                : "bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white hover:shadow-lg hover:shadow-violet-500/25"
             )}
-          />
-        </div>
-
-        {/* Row 3: Category + Payment Mode */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Category</label>
-            <select
-              {...register('categoryId')}
-              className={cn(
-                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
-                errors.categoryId ? 'border-red-500/60' : 'border-app-border'
-              )}
-            >
-              <option value="" className="bg-app-card text-app-fg">Select...</option>
-              {(['Need', 'Want', 'Saving'] as const).map(type => (
-                <optgroup key={type} label={type} className="bg-app-card text-app-fg">
-                  {categories.filter(c => c.budgetType === type).map(c => (
-                    <option key={c.id} value={c.id} className="bg-app-card text-app-fg">{c.name}</option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Payment Mode</label>
-            <select
-              {...register('paymentModeId')}
-              className={cn(
-                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
-                errors.paymentModeId ? 'border-red-500/60' : 'border-app-border'
-              )}
-            >
-              <option value="" className="bg-app-card text-app-fg">Select...</option>
-              {paymentModes.map(p => (
-                <option key={p.id} value={p.id} className="bg-app-card text-app-fg">{p.name}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={cn(
-            'w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all duration-200',
-            success
-              ? 'bg-emerald-500 text-white'
-              : 'bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white hover:shadow-lg hover:shadow-violet-500/25'
-          )}
-        >
-          {isSubmitting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : success ? (
-            '✓ Expense Added!'
-          ) : (
-            <>
-              <Plus className="w-4 h-4" />
-              Add Expense
-            </>
-          )}
-        </button>
-      </form>
+          >
+            {isSaving ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : success ? (
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" /> Saved Successfully!
+              </span>
+            ) : (
+              'Save Expense'
+            )}
+          </button>
+        )}
+      </div>
     </div>
   );
 }

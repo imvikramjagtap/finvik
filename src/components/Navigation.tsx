@@ -17,7 +17,6 @@ import { useAppStore } from '@/store/useAppStore';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/expenses', label: 'Expenses', icon: Receipt },
   { path: '/analytics', label: 'Analytics', icon: BarChart3 },
   { path: '/weekly', label: 'Weekly', icon: CalendarDays },
   { path: '/monthly', label: 'Monthly', icon: CalendarRange },
@@ -114,7 +113,7 @@ export function MobileNav() {
       {/* Mobile Bottom Bar */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-app-card border-t border-app-border px-2 py-1 safe-area-bottom">
         <div className="flex justify-around">
-          {navItems.slice(0, 6).map(({ path, label, icon: Icon }) => (
+          {navItems.slice(0, 5).map(({ path, label, icon: Icon }) => (
             <NavLink
               key={path}
               to={path}
