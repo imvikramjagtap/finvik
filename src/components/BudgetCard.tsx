@@ -58,12 +58,12 @@ export function BudgetCard({ type, budget, spent, remaining, percent }: BudgetCa
       </div>
 
       <div className="mb-4">
-        <p className="text-2xl font-bold text-white">{formatINR(budget)}</p>
+        <p className="text-2xl font-bold text-app-fg">{formatINR(budget)}</p>
         <p className="text-xs text-[hsl(215,20%,45%)] mt-0.5">monthly budget</p>
       </div>
 
       {/* Progress bar */}
-      <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-full h-2 mb-3 overflow-hidden">
+      <div className="w-full bg-app-muted border border-app-border/10 rounded-full h-2 mb-3 overflow-hidden">
         <div
           className={cn('h-2 rounded-full transition-all duration-700', isOverspent ? 'bg-red-500' : config.barColor)}
           style={{ width: `${Math.min(percent, 100)}%` }}
@@ -73,7 +73,7 @@ export function BudgetCard({ type, budget, spent, remaining, percent }: BudgetCa
       <div className="flex justify-between text-xs">
         <div>
           <p className="text-[hsl(215,20%,45%)]">Spent</p>
-          <p className={cn('font-semibold mt-0.5', isOverspent ? 'text-red-400' : 'text-white')}>{formatINR(spent)}</p>
+          <p className={cn('font-semibold mt-0.5', isOverspent ? 'text-red-400' : 'text-app-fg')}>{formatINR(spent)}</p>
         </div>
         <div className="text-right">
           <p className="text-[hsl(215,20%,45%)]">Remaining</p>

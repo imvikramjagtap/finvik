@@ -53,10 +53,10 @@ export function ExpenseDialog({ expense, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-lg bg-[hsl(222,47%,8%)] border border-[hsl(217,33%,20%)] rounded-2xl p-6 animate-fade-in shadow-2xl">
+      <div className="relative w-full max-w-lg bg-app-card border border-app-border rounded-2xl p-6 animate-fade-in shadow-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-bold text-white text-lg">{expense ? 'Edit Expense' : 'Add Expense'}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg bg-[hsl(217,33%,14%)] flex items-center justify-center hover:bg-[hsl(217,33%,20%)] transition-colors">
+          <h2 className="font-bold text-app-fg text-lg">{expense ? 'Edit Expense' : 'Add Expense'}</h2>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg bg-app-muted border border-app-border flex items-center justify-center hover:opacity-80 transition-colors">
             <X className="w-4 h-4 text-[hsl(215,20%,55%)]" />
           </button>
         </div>
@@ -66,15 +66,15 @@ export function ExpenseDialog({ expense, onClose }: Props) {
             <div>
               <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Date</label>
               <input type="date" {...register('date')}
-                className={cn('w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50',
-                  errors.date ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]')} />
+                className={cn('w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50',
+                  errors.date ? 'border-red-500/60' : 'border-app-border')} />
               {errors.date && <p className="text-red-400 text-xs mt-1">{errors.date.message}</p>}
             </div>
             <div>
               <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Amount (₹)</label>
               <input type="number" placeholder="0" {...register('amount')}
-                className={cn('w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]',
-                  errors.amount ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]')} />
+                className={cn('w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]',
+                  errors.amount ? 'border-red-500/60' : 'border-app-border')} />
               {errors.amount && <p className="text-red-400 text-xs mt-1">{errors.amount.message}</p>}
             </div>
           </div>
@@ -82,21 +82,21 @@ export function ExpenseDialog({ expense, onClose }: Props) {
           <div>
             <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Description</label>
             <input type="text" placeholder="e.g. Grocery shopping" {...register('description')}
-              className={cn('w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]',
-                errors.description ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]')} />
+              className={cn('w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]',
+                errors.description ? 'border-red-500/60' : 'border-app-border')} />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Category</label>
               <select {...register('categoryId')}
-                className={cn('w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50',
-                  errors.categoryId ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]')}>
-                <option value="" className="bg-[hsl(222,47%,8%)]">Select...</option>
+                className={cn('w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50',
+                  errors.categoryId ? 'border-red-500/60' : 'border-app-border')}>
+                <option value="" className="bg-app-card text-app-fg">Select...</option>
                 {(['Need', 'Want', 'Saving'] as const).map(type => (
-                  <optgroup key={type} label={type} className="bg-[hsl(222,47%,8%)]">
+                  <optgroup key={type} label={type} className="bg-app-card text-app-fg">
                     {categories.filter(c => c.budgetType === type).map(c => (
-                      <option key={c.id} value={c.id} className="bg-[hsl(222,47%,8%)]">{c.name}</option>
+                      <option key={c.id} value={c.id} className="bg-app-card text-app-fg">{c.name}</option>
                     ))}
                   </optgroup>
                 ))}
@@ -105,11 +105,11 @@ export function ExpenseDialog({ expense, onClose }: Props) {
             <div>
               <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Payment Mode</label>
               <select {...register('paymentModeId')}
-                className={cn('w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50',
-                  errors.paymentModeId ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]')}>
-                <option value="" className="bg-[hsl(222,47%,8%)]">Select...</option>
+                className={cn('w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50',
+                  errors.paymentModeId ? 'border-red-500/60' : 'border-app-border')}>
+                <option value="" className="bg-app-card text-app-fg">Select...</option>
                 {paymentModes.map(p => (
-                  <option key={p.id} value={p.id} className="bg-[hsl(222,47%,8%)]">{p.name}</option>
+                  <option key={p.id} value={p.id} className="bg-app-card text-app-fg">{p.name}</option>
                 ))}
               </select>
             </div>
@@ -118,12 +118,12 @@ export function ExpenseDialog({ expense, onClose }: Props) {
           <div>
             <label className="text-xs text-[hsl(215,20%,45%)] mb-1.5 block font-medium">Notes (optional)</label>
             <textarea {...register('notes')} rows={2} placeholder="Additional notes..."
-              className="w-full bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,20%)] rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-none placeholder:text-[hsl(215,20%,30%)]" />
+              className="w-full bg-app-muted border border-app-border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-none placeholder:text-[hsl(215,20%,30%)]" />
           </div>
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose}
-              className="flex-1 py-2.5 rounded-xl border border-[hsl(217,33%,20%)] text-[hsl(215,20%,55%)] text-sm font-medium hover:bg-[hsl(217,33%,14%)] transition-colors">
+              className="flex-1 py-2.5 rounded-xl border border-app-border text-[hsl(215,20%,55%)] text-sm font-medium hover:bg-app-muted transition-colors">
               Cancel
             </button>
             <button type="submit" disabled={isSubmitting}

@@ -39,7 +39,7 @@ export default function Monthly() {
 
   const totalSpent = useMemo(() => dailySpend.reduce((acc, d) => acc + d.amount, 0), [dailySpend]);
 
-  const scoreColor = budgetScore.total >= 75 ? 'text-emerald-400' : budgetScore.total >= 50 ? 'text-amber-400' : 'text-red-400';
+  const scoreColor = budgetScore.total >= 75 ? 'text-emerald-600 dark:text-emerald-400' : budgetScore.total >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
   const scoreLabel = budgetScore.total >= 75 ? 'Excellent' : budgetScore.total >= 50 ? 'Good' : 'Needs Work';
 
   // Format daily spend for chart
@@ -93,8 +93,8 @@ export default function Monthly() {
                 <span className="text-[hsl(215,20%,45%)]">{s.label}</span>
                 <span className="text-app-fg font-medium">{s.score}/{s.max}</span>
               </div>
-              <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
-                <div className="h-1.5 rounded-full bg-violet-400 transition-all duration-700" style={{ width: `${(s.score / s.max) * 100}%` }} />
+              <div className="w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
+                <div className="h-1.5 rounded-full bg-violet-600 dark:bg-violet-400 transition-all duration-700" style={{ width: `${(s.score / s.max) * 100}%` }} />
               </div>
             </div>
           ))}
@@ -137,7 +137,7 @@ export default function Monthly() {
                     <span className="text-sm font-medium text-app-fg truncate">{cat.categoryName}</span>
                     <span className={cn('inline-flex px-1.5 py-0.5 rounded-full text-xs border', typeBadge[cat.budgetType])}>{cat.budgetType}</span>
                   </div>
-                  <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
+                  <div className="w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
                     <div className="h-1.5 rounded-full transition-all" style={{ width: `${cat.percentage}%`, backgroundColor: typeColors[cat.budgetType] }} />
                   </div>
                 </div>

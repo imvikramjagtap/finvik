@@ -38,8 +38,8 @@ function SectionHeader({ icon: Icon, title, description }: { icon: React.Element
   );
 }
 
-const inputCls = 'w-full bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,20%)] rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]';
-const cardCls = 'rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in';
+const inputCls = 'w-full bg-app-muted border border-app-border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-[hsl(215,20%,30%)]';
+const cardCls = 'rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in';
 
 export default function Settings() {
   const {
@@ -148,7 +148,7 @@ export default function Settings() {
   return (
     <div className="p-4 md:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-white">Settings</h1>
+        <h1 className="text-2xl font-bold text-app-fg">Settings</h1>
         <p className="text-[hsl(215,20%,45%)] text-sm mt-0.5">Configure your financial setup</p>
       </div>
 
@@ -195,10 +195,10 @@ export default function Settings() {
             onKeyDown={e => e.key === 'Enter' && handleAddCategory()}
             className={cn(inputCls, 'flex-1')} />
           <select value={newCatType} onChange={e => setNewCatType(e.target.value as Category['budgetType'])}
-            className="bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,20%)] rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50">
-            <option value="Need" className="bg-[hsl(222,47%,8%)]">Need</option>
-            <option value="Want" className="bg-[hsl(222,47%,8%)]">Want</option>
-            <option value="Saving" className="bg-[hsl(222,47%,8%)]">Saving</option>
+            className="bg-app-muted border border-app-border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50">
+            <option value="Need" className="bg-app-card text-app-fg">Need</option>
+            <option value="Want" className="bg-app-card text-app-fg">Want</option>
+            <option value="Saving" className="bg-app-card text-app-fg">Saving</option>
           </select>
           <button onClick={handleAddCategory}
             className="px-3 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white transition-colors flex-shrink-0">
@@ -215,13 +215,13 @@ export default function Settings() {
               <p className={cn('text-xs font-semibold mb-2 uppercase tracking-wider', typeBadge[type].split(' ')[1])}>{type}</p>
               <div className="space-y-1.5">
                 {typeCats.map(cat => (
-                  <div key={cat.id} className="flex items-center gap-2 p-2.5 rounded-xl bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,16%)]">
+                  <div key={cat.id} className="flex items-center gap-2 p-2.5 rounded-xl bg-app-muted border border-app-border">
                     {editingCat === cat.id ? (
                       <>
                         <input value={editCatName} onChange={e => setEditCatName(e.target.value)} autoFocus
-                          className="flex-1 bg-transparent text-sm text-white focus:outline-none" />
+                          className="flex-1 bg-transparent text-sm text-app-fg focus:outline-none" />
                         <select value={editCatType} onChange={e => setEditCatType(e.target.value as Category['budgetType'])}
-                          className="bg-[hsl(222,47%,8%)] text-xs text-white rounded px-1 py-0.5">
+                          className="bg-app-card border border-app-border text-xs text-app-fg rounded px-1 py-0.5">
                           <option value="Need">Need</option>
                           <option value="Want">Want</option>
                           <option value="Saving">Saving</option>
@@ -229,13 +229,13 @@ export default function Settings() {
                         <button onClick={() => saveEditCat(cat.id)} className="text-emerald-400 hover:text-emerald-300 transition-colors">
                           <Check className="w-3.5 h-3.5" />
                         </button>
-                        <button onClick={() => setEditingCat(null)} className="text-[hsl(215,20%,45%)] hover:text-white transition-colors">
+                        <button onClick={() => setEditingCat(null)} className="text-[hsl(215,20%,45%)] hover:text-app-fg transition-colors">
                           <X className="w-3.5 h-3.5" />
                         </button>
                       </>
                     ) : (
                       <>
-                        <span className="flex-1 text-sm text-white">{cat.name}</span>
+                        <span className="flex-1 text-sm text-app-fg">{cat.name}</span>
                         <button onClick={() => startEditCat(cat)} className="text-[hsl(215,20%,35%)] hover:text-violet-400 transition-colors">
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
@@ -266,21 +266,21 @@ export default function Settings() {
         </div>
         <div className="space-y-1.5">
           {paymentModes.map(pm => (
-            <div key={pm.id} className="flex items-center gap-2 p-2.5 rounded-xl bg-[hsl(217,33%,11%)] border border-[hsl(217,33%,16%)]">
+            <div key={pm.id} className="flex items-center gap-2 p-2.5 rounded-xl bg-app-muted border border-app-border">
               {editingPm === pm.id ? (
                 <>
                   <input value={editPmName} onChange={e => setEditPmName(e.target.value)} autoFocus
-                    className="flex-1 bg-transparent text-sm text-white focus:outline-none" />
+                    className="flex-1 bg-transparent text-sm text-app-fg focus:outline-none" />
                   <button onClick={() => saveEditPm(pm.id)} className="text-emerald-400 hover:text-emerald-300 transition-colors">
                     <Check className="w-3.5 h-3.5" />
                   </button>
-                  <button onClick={() => setEditingPm(null)} className="text-[hsl(215,20%,45%)] hover:text-white transition-colors">
+                  <button onClick={() => setEditingPm(null)} className="text-[hsl(215,20%,45%)] hover:text-app-fg transition-colors">
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </>
               ) : (
                 <>
-                  <span className="flex-1 text-sm text-white">{pm.name}</span>
+                  <span className="flex-1 text-sm text-app-fg">{pm.name}</span>
                   <button onClick={() => startEditPm(pm)} className="text-[hsl(215,20%,35%)] hover:text-violet-400 transition-colors">
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
@@ -300,12 +300,12 @@ export default function Settings() {
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <button onClick={handleExportJSON}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[hsl(217,33%,20%)] text-sm text-[hsl(215,20%,65%)] hover:bg-[hsl(217,33%,14%)] hover:text-white transition-all">
+              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-app-border text-sm text-[hsl(215,20%,65%)] hover:bg-app-muted hover:text-app-fg transition-all">
               <Download className="w-4 h-4" />
               Export JSON
             </button>
             <button onClick={handleExportCSV}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[hsl(217,33%,20%)] text-sm text-[hsl(215,20%,65%)] hover:bg-[hsl(217,33%,14%)] hover:text-white transition-all">
+              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-app-border text-sm text-[hsl(215,20%,65%)] hover:bg-app-muted hover:text-app-fg transition-all">
               <Download className="w-4 h-4" />
               Export CSV
             </button>

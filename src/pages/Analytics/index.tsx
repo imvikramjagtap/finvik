@@ -80,7 +80,7 @@ export default function Analytics() {
                 <span>Remaining</span><span className="text-app-fg font-medium">{formatCurrency(b.remaining)}</span>
               </div>
             </div>
-            <div className="mt-3 w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
+            <div className="mt-3 w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
               <div className="h-1.5 rounded-full transition-all duration-700" style={{ width: `${Math.min(b.percent, 100)}%`, backgroundColor: typeColors[b.type] }} />
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function Analytics() {
             <div key={type} className="text-center">
               <div className="text-3xl font-bold mb-1" style={{ color }}>{pct}%</div>
               <div className="text-xs text-[hsl(215,20%,45%)]">{type}</div>
-              <div className="mt-2 w-full bg-[rgba(255,255,255,0.05)] rounded-full h-2 overflow-hidden">
+              <div className="mt-2 w-full bg-app-muted border border-app-border/10 rounded-full h-2 overflow-hidden">
                 <div className="h-2 rounded-full transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: color }} />
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function Analytics() {
                     <span className="text-sm font-medium text-app-fg truncate">{cat.categoryName}</span>
                     <span className={cn('inline-flex px-1.5 py-0.5 rounded-full text-xs border', typeBadge[cat.budgetType])}>{cat.budgetType}</span>
                   </div>
-                  <div className="mt-1.5 w-full bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
+                  <div className="mt-1.5 w-full bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
                     <div className="h-1.5 rounded-full" style={{ width: `${cat.percentage}%`, backgroundColor: typeColors[cat.budgetType] }} />
                   </div>
                 </div>

@@ -60,10 +60,10 @@ export default function Weekly() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total Spent', value: formatCurrency(totalSpent), color: 'text-violet-400' },
-          { label: 'Within Limit', value: `${adherentCount}/${weeklySummaries.length} weeks`, color: 'text-emerald-400' },
+          { label: 'Total Spent', value: formatCurrency(totalSpent), color: 'text-violet-600 dark:text-violet-400' },
+          { label: 'Within Limit', value: `${adherentCount}/${weeklySummaries.length} weeks`, color: 'text-emerald-500 dark:text-emerald-400' },
           { label: 'Avg/Week', value: formatCurrency(weeklySummaries.length ? Math.round(totalSpent / weeklySummaries.length) : 0), color: 'text-app-fg' },
-          { label: 'Over Limit', value: `${weeklySummaries.length - adherentCount} weeks`, color: weeklySummaries.some(w => w.isOverspent) ? 'text-red-400' : 'text-emerald-400' },
+          { label: 'Over Limit', value: `${weeklySummaries.length - adherentCount} weeks`, color: weeklySummaries.some(w => w.isOverspent) ? 'text-red-500 dark:text-red-400' : 'text-emerald-500 dark:text-emerald-400' },
         ].map(s => (
           <div key={s.label} className="rounded-2xl p-4 border border-app-border bg-app-card animate-fade-in">
             <p className="text-xs text-[hsl(215,20%,45%)] mb-1">{s.label}</p>
@@ -94,15 +94,15 @@ export default function Weekly() {
                   <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,55%)] font-medium">W{w.week}</td>
                   <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,45%)] whitespace-nowrap">{w.label}</td>
                   <td className="px-4 py-3.5">
-                    <span className={cn('text-sm font-semibold', w.isOverspent ? 'text-red-400' : 'text-app-fg')}>{formatCurrency(w.spent)}</span>
+                    <span className={cn('text-sm font-semibold', w.isOverspent ? 'text-red-500 dark:text-red-400' : 'text-app-fg')}>{formatCurrency(w.spent)}</span>
                   </td>
                   <td className="px-4 py-3.5 text-sm text-[hsl(215,20%,45%)]">{formatCurrency(w.limit)}</td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-16 bg-[rgba(255,255,255,0.05)] rounded-full h-1.5 overflow-hidden">
+                      <div className="w-16 bg-app-muted border border-app-border/10 rounded-full h-1.5 overflow-hidden">
                         <div className="h-1.5 rounded-full transition-all" style={{ width: `${Math.min(w.percentage, 100)}%`, backgroundColor: w.isOverspent ? '#f87171' : '#4ade80' }} />
                       </div>
-                      <span className={cn('text-xs font-medium', w.isOverspent ? 'text-red-400' : 'text-emerald-400')}>{w.percentage.toFixed(0)}%</span>
+                      <span className={cn('text-xs font-medium', w.isOverspent ? 'text-red-500 dark:text-red-400' : 'text-emerald-500 dark:text-emerald-400')}>{w.percentage.toFixed(0)}%</span>
                     </div>
                   </td>
                   <td className="px-4 py-3.5">

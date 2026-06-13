@@ -69,7 +69,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
         <div className="col-span-2 md:col-span-1 rounded-2xl p-4 border border-violet-500/20 bg-violet-500/10">
           <p className="text-xs text-[hsl(215,20%,45%)] mb-1">Total Spent</p>
-          <p className="text-2xl font-bold text-violet-300">{formatCurrency(totalSpent)}</p>
+          <p className="text-2xl font-bold text-violet-600 dark:text-violet-300">{formatCurrency(totalSpent)}</p>
           <p className="text-xs text-[hsl(215,20%,45%)] mt-1">{Math.round((totalSpent / salary) * 100)}% of salary</p>
         </div>
         <div className="rounded-2xl p-4 border border-app-border bg-app-card">

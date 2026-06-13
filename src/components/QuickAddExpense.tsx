@@ -43,12 +43,12 @@ export function QuickAddExpense() {
   };
 
   return (
-    <div className="rounded-2xl border border-[hsl(217,33%,17%)] bg-[hsl(222,47%,8%)] p-6 animate-fade-in">
+    <div className="rounded-2xl border border-app-border bg-app-card p-6 animate-fade-in">
       <div className="flex items-center gap-2 mb-5">
         <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
           <Plus className="w-4 h-4 text-violet-400" />
         </div>
-        <h2 className="font-semibold text-white text-base">Quick Add Expense</h2>
+        <h2 className="font-semibold text-app-fg text-base">Quick Add Expense</h2>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
@@ -60,8 +60,8 @@ export function QuickAddExpense() {
               type="date"
               {...register('date')}
               className={cn(
-                'w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
-                errors.date ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]'
+                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
+                errors.date ? 'border-red-500/60' : 'border-app-border'
               )}
             />
           </div>
@@ -72,8 +72,8 @@ export function QuickAddExpense() {
               placeholder="0"
               {...register('amount')}
               className={cn(
-                'w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all placeholder:text-[hsl(215,20%,30%)]',
-                errors.amount ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]'
+                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all placeholder:text-[hsl(215,20%,30%)]',
+                errors.amount ? 'border-red-500/60' : 'border-app-border'
               )}
             />
           </div>
@@ -87,8 +87,8 @@ export function QuickAddExpense() {
             placeholder="What did you spend on?"
             {...register('description')}
             className={cn(
-              'w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all placeholder:text-[hsl(215,20%,30%)]',
-              errors.description ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]'
+              'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all placeholder:text-[hsl(215,20%,30%)]',
+              errors.description ? 'border-red-500/60' : 'border-app-border'
             )}
           />
         </div>
@@ -100,15 +100,15 @@ export function QuickAddExpense() {
             <select
               {...register('categoryId')}
               className={cn(
-                'w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
-                errors.categoryId ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]'
+                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
+                errors.categoryId ? 'border-red-500/60' : 'border-app-border'
               )}
             >
-              <option value="" className="bg-[hsl(222,47%,8%)]">Select...</option>
+              <option value="" className="bg-app-card text-app-fg">Select...</option>
               {(['Need', 'Want', 'Saving'] as const).map(type => (
-                <optgroup key={type} label={type} className="bg-[hsl(222,47%,8%)]">
+                <optgroup key={type} label={type} className="bg-app-card text-app-fg">
                   {categories.filter(c => c.budgetType === type).map(c => (
-                    <option key={c.id} value={c.id} className="bg-[hsl(222,47%,8%)]">{c.name}</option>
+                    <option key={c.id} value={c.id} className="bg-app-card text-app-fg">{c.name}</option>
                   ))}
                 </optgroup>
               ))}
@@ -119,13 +119,13 @@ export function QuickAddExpense() {
             <select
               {...register('paymentModeId')}
               className={cn(
-                'w-full bg-[hsl(217,33%,11%)] border rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
-                errors.paymentModeId ? 'border-red-500/60' : 'border-[hsl(217,33%,20%)]'
+                'w-full bg-app-muted border rounded-lg px-3 py-2.5 text-sm text-app-fg focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all',
+                errors.paymentModeId ? 'border-red-500/60' : 'border-app-border'
               )}
             >
-              <option value="" className="bg-[hsl(222,47%,8%)]">Select...</option>
+              <option value="" className="bg-app-card text-app-fg">Select...</option>
               {paymentModes.map(p => (
-                <option key={p.id} value={p.id} className="bg-[hsl(222,47%,8%)]">{p.name}</option>
+                <option key={p.id} value={p.id} className="bg-app-card text-app-fg">{p.name}</option>
               ))}
             </select>
           </div>
