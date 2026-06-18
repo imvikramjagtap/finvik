@@ -8,7 +8,8 @@ import { formatCurrency, formatDate, cn } from '@/lib/utils';
 import { Wallet, TrendingDown, Search, Trash2, Edit2, Filter, Receipt } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import type { Expense } from '@/types';
-import { startWelcomeTour, hasSeenTour } from '@/hooks/useTour';
+import { hasSeenTour } from '@/hooks/useTour';
+import { TourPromptDialog } from '@/components/TourPromptDialog';
 
 const PIE_COLORS = {
   Need: '#38bdf8',
@@ -46,10 +47,12 @@ export default function Dashboard() {
   const catMap = useMemo(() => new Map(categories.map(c => [c.id, c])), [categories]);
   const pmMap = useMemo(() => new Map(paymentModes.map(p => [p.id, p])), [paymentModes]);
 
-  // Auto-trigger welcome tour on first dashboard visit after onboarding
+  const [showTourPrompt, setShowTourPrompt] = useState(false);
+
+  // Auto-trigger welcome tour prompt on first dashboard visit after onboarding
   useEffect(() => {
     if (!hasSeenTour()) {
-      const timer = setTimeout(() => startWelcomeTour(), 600);
+      const timer = setTimeout(() => setShowTourPrompt(true), 1000);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -365,6 +368,11 @@ export default function Dashboard() {
           expense={editingExpense}
           onClose={() => { setDialogOpen(false); setEditingExpense(undefined); }}
         />
+      )}
+
+      {/* Welcome Tour Prompt Popup */}
+      {showTourPrompt && (
+        <TourPromptDialog onClose={() => setShowTourPrompt(false)} />
       )}
     </div>
   );
