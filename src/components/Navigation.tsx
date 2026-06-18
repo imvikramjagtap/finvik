@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -14,9 +14,12 @@ import {
   Eye,
   EyeOff,
   HelpCircle,
+  Download,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { PWAInstallDialog } from '@/components/PWAInstallDialog';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -30,6 +33,19 @@ const navItems = [
 
 export function Sidebar() {
   const { theme, toggleTheme, privateMode, togglePrivateMode } = useAppStore();
+  const { shouldShowInstallButton, platform, triggerInstall } = usePWAInstall();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleInstallClick = async () => {
+    if (platform === 'other') {
+      const success = await triggerInstall();
+      if (!success) {
+        setIsDialogOpen(true);
+      }
+    } else {
+      setIsDialogOpen(true);
+    }
+  };
 
   return (
     <aside className="hidden md:flex flex-col w-64 min-h-screen bg-app-card border-r border-app-border fixed left-0 top-0 z-50">
@@ -74,7 +90,7 @@ export function Sidebar() {
         <button
           id="driver-theme-toggle"
           onClick={toggleTheme}
-          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors"
+          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-3">
             {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
@@ -88,7 +104,7 @@ export function Sidebar() {
         <button
           id="driver-private-toggle"
           onClick={togglePrivateMode}
-          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors"
+          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-app-fg hover:bg-app-muted transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-3">
             {privateMode ? <EyeOff className="w-4 h-4 text-rose-500" /> : <Eye className="w-4 h-4 text-emerald-500" />}
@@ -98,6 +114,18 @@ export function Sidebar() {
             {privateMode ? 'Hidden' : 'Visible'}
           </span>
         </button>
+
+        {shouldShowInstallButton && (
+          <button
+            onClick={handleInstallClick}
+            className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-semibold text-white bg-violet-600 hover:bg-violet-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer shadow-md shadow-violet-600/10"
+          >
+            <span className="flex items-center gap-3">
+              <Download className="w-4 h-4 text-violet-200" />
+              <span>Install App</span>
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Footer */}
@@ -107,12 +135,27 @@ export function Sidebar() {
           Built by <a href="https://vikramjagtap.dev/" target="_blank" rel="noopener noreferrer" className="font-semibold text-violet-400 hover:text-violet-300 transition-colors">Vikram Jagtap</a>
         </p>
       </div>
+
+      <PWAInstallDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} platform={platform} />
     </aside>
   );
 }
 
 export function MobileNav() {
   const { theme, toggleTheme, privateMode, togglePrivateMode } = useAppStore();
+  const { shouldShowInstallButton, platform, triggerInstall } = usePWAInstall();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleInstallClick = async () => {
+    if (platform === 'other') {
+      const success = await triggerInstall();
+      if (!success) {
+        setIsDialogOpen(true);
+      }
+    } else {
+      setIsDialogOpen(true);
+    }
+  };
 
   return (
     <>
@@ -125,16 +168,25 @@ export function MobileNav() {
           <span className="font-bold text-app-fg text-sm">FinVik</span>
         </div>
         <div className="flex items-center gap-2">
+          {shouldShowInstallButton && (
+            <button
+              onClick={handleInstallClick}
+              className="w-9 h-9 rounded-lg bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 hover:bg-violet-500/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+              aria-label="Install app"
+            >
+              <Download className="w-4.5 h-4.5" />
+            </button>
+          )}
           <button
             onClick={togglePrivateMode}
-            className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors"
+            className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors cursor-pointer"
             aria-label="Toggle private mode"
           >
             {privateMode ? <EyeOff className="w-4 h-4 text-rose-500" /> : <Eye className="w-4 h-4 text-emerald-500" />}
           </button>
           <button
             onClick={toggleTheme}
-            className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors"
+            className="w-9 h-9 rounded-lg bg-app-muted border border-app-border flex items-center justify-center text-app-fg hover:opacity-85 transition-colors cursor-pointer"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Moon className="w-4 h-4 text-violet-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
@@ -177,6 +229,8 @@ export function MobileNav() {
           </NavLink>
         </div>
       </nav>
+
+      <PWAInstallDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} platform={platform} />
     </>
   );
 }
