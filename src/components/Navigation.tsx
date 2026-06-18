@@ -195,8 +195,8 @@ export function MobileNav() {
       </header>
 
       {/* Mobile Bottom Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-app-card border-t border-app-border px-2 py-1 safe-area-bottom">
-        <div className="flex justify-around">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-app-card border-t border-app-border px-1 py-1 safe-area-bottom w-full">
+        <div className="grid grid-cols-6 w-full">
           {navItems.slice(0, 5).map(({ path, label, icon: Icon }) => (
             <NavLink
               key={path}
@@ -204,28 +204,28 @@ export function MobileNav() {
               end={path === '/'}
               className={({ isActive }) =>
                 cn(
-                  'flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200',
+                  'flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg transition-all duration-200 min-w-0 text-center',
                   isActive
                     ? 'text-violet-500 dark:text-violet-400 font-semibold'
                     : 'text-[hsl(215,20%,45%)]'
                 )
               }
             >
-              <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              <Icon className="w-5 h-5 flex-shrink-0" />
+              <span className="text-[9px] sm:text-[10px] font-medium truncate w-full px-1">{label}</span>
             </NavLink>
           ))}
           <NavLink
             to="/settings"
             className={({ isActive }) =>
               cn(
-                'flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200',
+                'flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg transition-all duration-200 min-w-0 text-center',
                 isActive ? 'text-violet-500 dark:text-violet-400 font-semibold' : 'text-[hsl(215,20%,45%)]'
               )
             }
           >
-            <Settings className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Settings</span>
+            <Settings className="w-5 h-5 flex-shrink-0" />
+            <span className="text-[9px] sm:text-[10px] font-medium truncate w-full px-1">Settings</span>
           </NavLink>
         </div>
       </nav>
