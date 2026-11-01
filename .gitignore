@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Video generation outputs
+brag-output*/
+*.mp4
+*.wav
+
+# Local Python environment
+.venv/
+
+# Hyperframes temporary artifacts
+.hyperframes/

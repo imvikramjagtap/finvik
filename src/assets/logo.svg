@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="shield-grad-main" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="shield-grad-cyan" x1="20" y1="20" x2="50" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="shield-grad-emerald" x1="50" y1="20" x2="80" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="shield-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#8b5cf6" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="100" height="100" rx="24" fill="#0b1120" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+  <g filter="url(#shield-glow)">
+    <!-- Left Wing (Needs 50% - solid foundation) -->
+    <path d="M 22 26 C 22 23.5 24.5 21.5 27 22.5 L 48 31 C 49.5 31.6 50 33 50 34.5 L 50 78 C 50 80.5 47.2 82 45 80.5 L 24 66 C 22.8 65.2 22 63.8 22 62.5 Z" 
+          fill="url(#shield-grad-main)"/>
+    
+    <!-- Right Upper Wing (Wants 30%) -->
+    <path d="M 54 33 C 54 31.5 55 30.5 56.5 30 L 73 24.5 C 75.5 23.6 78 25.5 78 28 L 78 48 C 78 49.5 77 50.8 75.5 51.5 L 56.5 59 C 55 59.6 54 58.5 54 57 Z" 
+          fill="url(#shield-grad-cyan)"/>
+    
+    <!-- Right Lower Wing (Savings 20%) -->
+    <path d="M 54 62 C 54 60.5 55.2 59.8 56.5 59.3 L 75.5 52 C 77.2 51.3 78 52.8 78 54.2 L 78 61.5 C 78 63 77.2 64.2 76 65 L 56.5 78.5 C 55 79.5 54 78.5 54 77 Z" 
+          fill="url(#shield-grad-emerald)"/>
+
+    <!-- Subtle central geometric privacy node -->
+    <circle cx="50" cy="56" r="3.5" fill="#ffffff" opacity="0.9"/>
+  </g>
+</svg>

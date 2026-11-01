@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinVik Logo Concepts & Approval Gallery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #080d1a;
+        --card: #0f172a;
+        --border: rgba(255, 255, 255, 0.1);
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --primary: #863bff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', -apple-system, sans-serif;
+        padding: 40px 24px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+      .tag {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(134, 59, 255, 0.15);
+        border: 1px solid rgba(134, 59, 255, 0.35);
+        color: #c084fc;
+        border-radius: 9999px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 12px;
+      }
+      p.subtitle {
+        color: var(--muted);
+        font-size: 18px;
+        max-width: 650px;
+        margin: 0 auto;
+      }
+
+      /* Grid of options */
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+        gap: 32px;
+      }
+      .option-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 32px;
+        transition: transform 0.2s, border-color 0.2s;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .option-card:hover {
+        border-color: rgba(134, 59, 255, 0.5);
+        transform: translateY(-2px);
+      }
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .badge-num {
+        background: #1e293b;
+        color: #38bdf8;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 6px 14px;
+        border-radius: 8px;
+      }
+      .option-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .option-concept {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 24px;
+      }
+
+      /* Preview Display Stage */
+      .stage-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: #090e1c;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+      .hero-logo {
+        width: 100px;
+        height: 100px;
+      }
+      .app-header-preview {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        background: #0f172a;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .header-icon {
+        width: 38px;
+        height: 38px;
+      }
+      .brand-text h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .brand-text span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* Scale Sizes Preview */
+      .scale-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 14px 20px;
+        margin-bottom: 20px;
+      }
+      .size-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .size-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+
+      .pills-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .pill {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+      .pill-purple { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; }
+      .pill-cyan { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; }
+      .pill-amber { background: rgba(251, 191, 36, 0.15); color: #fde047; }
+      .pill-emerald { background: rgba(74, 222, 128, 0.15); color: #86efac; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="tag">FinVik Brand Identity Redesign</div>
+        <h1>Choose the New FinVik Logo</h1>
+        <p class="subtitle">Replacing the placeholder Vite lightning bolt with a custom, high-identity vector mark designed specifically for privacy-first 50/30/20 personal finance.</p>
+      </header>
+
+      <div class="options-grid">
+        
+        <!-- OPTION 1 -->
+        <div class="option-card">
+          <div class="card-top">
+            <span class="badge-num">OPTION 1</span>
+            <div class="pills-list">
+              <span class="pill pill-purple">Privacy Shield</span>
+              <span class="pill pill-cyan">50/30/20 Envelopes</span>
+            </div>
+          </div>
+          <h2 class="option-title">The Triad Shield</h2>
+          <p class="option-concept">
+            A stylized <strong>"V" Shield</strong> made of 3 interlocking geometric wings representing the 50/30/20 framework (large 50% Needs anchor on the left, 30% Wants and 20% Savings wings on the right). Symbolizes ironclad privacy, security, and financial balance.
+          </p>
+          
+          <div class="stage-row">
+            <img class="hero-logo" src="/logo-options/option-1-triad-shield.svg" alt="Option 1" />
+            <div class="app-header-preview">
+              <img class="header-icon" src="/logo-options/option-1-triad-shield.svg" alt="Icon" />
+              <div class="brand-text">
+                <h4>FinVik</h4>
+                <span>Personal Finance</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scale-row">
+            <div class="size-box">
+              <span class="size-label">16px Favicon</span>
+              <img style="width: 16px; height: 16px;" src="/logo-options/option-1-triad-shield.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">32px App</span>
+              <img style="width: 32px; height: 32px;" src="/logo-options/option-1-triad-shield.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">48px Nav</span>
+              <img style="width: 48px; height: 48px;" src="/logo-options/option-1-triad-shield.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">64px PWA</span>
+              <img style="width: 64px; height: 64px;" src="/logo-options/option-1-triad-shield.svg" />
+            </div>
+          </div>
+        </div>
+
+        <!-- OPTION 2 -->
+        <div class="option-card">
+          <div class="card-top">
+            <span class="badge-num">OPTION 2</span>
+            <div class="pills-list">
+              <span class="pill pill-purple">F + V Monogram</span>
+              <span class="pill pill-amber">Prism Ribbon</span>
+            </div>
+          </div>
+          <h2 class="option-title">The Prism Fold</h2>
+          <p class="option-concept">
+            An origami-inspired ribbon fold that intertwines an <strong>'F' and 'V'</strong> into a single downward vector chevron with high-tech 45° angles. Gives the app a razor-sharp, Linear/Raycast modern developer aesthetic.
+          </p>
+          
+          <div class="stage-row">
+            <img class="hero-logo" src="/logo-options/option-2-prism-fold.svg" alt="Option 2" />
+            <div class="app-header-preview">
+              <img class="header-icon" src="/logo-options/option-2-prism-fold.svg" alt="Icon" />
+              <div class="brand-text">
+                <h4>FinVik</h4>
+                <span>Personal Finance</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scale-row">
+            <div class="size-box">
+              <span class="size-label">16px Favicon</span>
+              <img style="width: 16px; height: 16px;" src="/logo-options/option-2-prism-fold.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">32px App</span>
+              <img style="width: 32px; height: 32px;" src="/logo-options/option-2-prism-fold.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">48px Nav</span>
+              <img style="width: 48px; height: 48px;" src="/logo-options/option-2-prism-fold.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">64px PWA</span>
+              <img style="width: 64px; height: 64px;" src="/logo-options/option-2-prism-fold.svg" />
+            </div>
+          </div>
+        </div>
+
+        <!-- OPTION 3 -->
+        <div class="option-card">
+          <div class="card-top">
+            <span class="badge-num">OPTION 3</span>
+            <div class="pills-list">
+              <span class="pill pill-cyan">Triple Arc</span>
+              <span class="pill pill-emerald">Vault Ring</span>
+            </div>
+          </div>
+          <h2 class="option-title">The Balance Crest</h2>
+          <p class="option-concept">
+            A segmented vault disc split into exactly <strong>three proportional arcs (50% Needs, 30% Wants, 20% Savings)</strong> surrounding a central upward 'V' arrow. Directly visualizes the complete budgeting cycle and total wealth balance.
+          </p>
+          
+          <div class="stage-row">
+            <img class="hero-logo" src="/logo-options/option-3-balance-crest.svg" alt="Option 3" />
+            <div class="app-header-preview">
+              <img class="header-icon" src="/logo-options/option-3-balance-crest.svg" alt="Icon" />
+              <div class="brand-text">
+                <h4>FinVik</h4>
+                <span>Personal Finance</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scale-row">
+            <div class="size-box">
+              <span class="size-label">16px Favicon</span>
+              <img style="width: 16px; height: 16px;" src="/logo-options/option-3-balance-crest.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">32px App</span>
+              <img style="width: 32px; height: 32px;" src="/logo-options/option-3-balance-crest.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">48px Nav</span>
+              <img style="width: 48px; height: 48px;" src="/logo-options/option-3-balance-crest.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">64px PWA</span>
+              <img style="width: 64px; height: 64px;" src="/logo-options/option-3-balance-crest.svg" />
+            </div>
+          </div>
+        </div>
+
+        <!-- OPTION 4 -->
+        <div class="option-card">
+          <div class="card-top">
+            <span class="badge-num">OPTION 4</span>
+            <div class="pills-list">
+              <span class="pill pill-purple">Growth Vector</span>
+              <span class="pill pill-emerald">Stepped Pillars</span>
+            </div>
+          </div>
+          <h2 class="option-title">The Apex Vector</h2>
+          <p class="option-concept">
+            A bold 'V' where the left stroke is an anchor blade and the right stroke rises in <strong>three stepped growth pillars</strong> (representing Needs, Wants, and compound Savings). High energy, athletic, and growth-focused.
+          </p>
+          
+          <div class="stage-row">
+            <img class="hero-logo" src="/logo-options/option-4-apex-vector.svg" alt="Option 4" />
+            <div class="app-header-preview">
+              <img class="header-icon" src="/logo-options/option-4-apex-vector.svg" alt="Icon" />
+              <div class="brand-text">
+                <h4>FinVik</h4>
+                <span>Personal Finance</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scale-row">
+            <div class="size-box">
+              <span class="size-label">16px Favicon</span>
+              <img style="width: 16px; height: 16px;" src="/logo-options/option-4-apex-vector.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">32px App</span>
+              <img style="width: 32px; height: 32px;" src="/logo-options/option-4-apex-vector.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">48px Nav</span>
+              <img style="width: 48px; height: 48px;" src="/logo-options/option-4-apex-vector.svg" />
+            </div>
+            <div class="size-box">
+              <span class="size-label">64px PWA</span>
+              <img style="width: 64px; height: 64px;" src="/logo-options/option-4-apex-vector.svg" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

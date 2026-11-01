@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { PWAInstallDialog } from '@/components/PWAInstallDialog';
+import { FinvikLogo } from '@/components/FinvikLogo';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -51,15 +52,7 @@ export function Sidebar() {
     <aside className="hidden md:flex flex-col w-64 min-h-screen bg-app-card border-r border-app-border fixed left-0 top-0 z-50">
       {/* Logo */}
       <div className="p-6 border-b border-app-border">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
-            <TrendingUp className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="font-bold text-app-fg text-sm">FinVik</p>
-            <p className="text-[hsl(215,20%,45%)] text-xs">Personal Finance</p>
-          </div>
-        </div>
+        <FinvikLogo size={36} showText={true} />
       </div>
 
       {/* Nav */}
@@ -161,12 +154,7 @@ export function MobileNav() {
     <>
       {/* Mobile Top Header */}
       <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-app-card border-b border-app-border flex items-center justify-between px-4 z-50">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
-            <TrendingUp className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-bold text-app-fg text-sm">FinVik</span>
-        </div>
+        <FinvikLogo size={28} showText={true} />
         <div className="flex items-center gap-2">
           {shouldShowInstallButton && (
             <button

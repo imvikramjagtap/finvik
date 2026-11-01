@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { cn, formatCurrency } from '@/lib/utils';
 import type { Category, PaymentMode, AppSettings } from '@/types';
+import { FinvikLogo } from '@/components/FinvikLogo';
 
 type Step = 'WELCOME' | 'SALARY' | 'BUDGET_RULE' | 'CATEGORIES' | 'PAYMENT_MODES' | 'WEEKLY_LIMIT' | 'ALL_SET';
 
@@ -186,8 +187,8 @@ export default function OnboardingFlow() {
           {/* STEP 1: WELCOME */}
           {currentStep === 'WELCOME' && (
             <div className="space-y-6 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-violet-600 to-cyan-500 flex items-center justify-center mx-auto shadow-lg shadow-violet-500/20">
-                <Wallet className="w-8 h-8 text-white animate-pulse" />
+              <div className="flex items-center justify-center mx-auto">
+                <FinvikLogo size={72} />
               </div>
               <div className="space-y-2">
                 <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">

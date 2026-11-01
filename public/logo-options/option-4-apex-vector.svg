@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="apex-left-grad" x1="20" y1="20" x2="50" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="apex-bar-1" x1="50" y1="65" x2="60" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="apex-bar-2" x1="60" y1="45" x2="72" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="apex-bar-3" x1="72" y1="20" x2="86" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="apex-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#8b5cf6" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background squircle -->
+  <rect width="100" height="100" rx="24" fill="#0b1120" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+  <g filter="url(#apex-glow)">
+    <!-- Left Bold Anchor Blade (Downstroke of 'V') -->
+    <path d="M 22 28 C 22 25.5 24 23.5 26.5 23.5 L 34.5 23.5 C 36.5 23.5 38 24.8 38.8 26.5 L 50 56 L 47 79 C 46.8 81 44.5 82 43 80.5 L 23 32 C 22.3 30.8 22 29.5 22 28 Z" 
+          fill="url(#apex-left-grad)"/>
+
+    <!-- Right Pillar 1: Base / Needs (Level 1) -->
+    <rect x="52" y="60" width="10" height="20" rx="5" fill="url(#apex-bar-1)"/>
+
+    <!-- Right Pillar 2: Mid / Wants (Level 2) -->
+    <rect x="64" y="42" width="10" height="38" rx="5" fill="url(#apex-bar-2)"/>
+
+    <!-- Right Pillar 3: Apex / Savings (Level 3 - Highest Growth Peak) -->
+    <rect x="76" y="24" width="10" height="56" rx="5" fill="url(#apex-bar-3)"/>
+  </g>
+</svg>
